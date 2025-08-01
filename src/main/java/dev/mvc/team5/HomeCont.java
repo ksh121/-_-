@@ -18,7 +18,6 @@ public class HomeCont {
   }
   
   @GetMapping(value="/") // http://localhost:9091
-  
   public String home() { // 파일명 return
     // return "index"; // /templates/index.html
     return "<H1>Spring Boot server 작동중...</H1>";
