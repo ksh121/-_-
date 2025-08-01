@@ -1,0 +1,88 @@
+/* TalentCreateForm.css */
+
+/* 카드 박스 형태로 감싸기 */
+.talent-create-form {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+}
+
+/* 제목 */
+.talent-create-form h3 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* 인풋, 셀렉트 공통 스타일 */
+.talent-create-form input,
+.talent-create-form select {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 16px;
+  border: 2px solid #e1e5e9;
+  border-radius: 12px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
+.talent-create-form input:focus,
+.talent-create-form select:focus {
+  border-color: #007bff;
+}
+
+/* 등록 버튼 */
+.talent-create-form button[type="submit"] {
+  align-self: flex-start;
+  background-color: #007bff;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* 닫기 버튼 */
+.talent-create-form button[type="close"] {
+  align-self: flex-end;
+  background-color: #dc3545;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.talent-create-form button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.talent-create-form button[type="close"]:hover {
+  background-color: #c82333;
+}
+
+/* 등록, 닫기 버튼 그룹 */
+.form-button-group {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>로그인 상태 확인</title>
+</head>
+<body>
+  <h1>로그인 상태 확인</h1>
+  <button id="checkSessionBtn">로그인 정보 확인</button>
+  <pre id="result"></pre>
+
+  <script>
+    document.getElementById('checkSessionBtn').addEventListener('click', () => {
+      fetch('/user/session', {
+        method: 'GET',
+        credentials: 'include'  // 세션 쿠키 포함해서 요청
+      })
+      .then(async (res) => {
+        if (res.ok) {
+          const data = await res.json();
+          document.getElementById('result').textContent = JSON.stringify(data, null, 2);
+        } else {
+          const text = await res.text();
+          document.getElementById('result').textContent = 'Error: ' + text;
+        }
+      })
+      .catch(err => {
+        document.getElementById('result').textContent = 'Fetch error: ' + err;
+      });
+    });
+  </script>
+</body>
+</html>

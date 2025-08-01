@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>회원 기능 통합 테스트</title>
+</head>
+<body>
+  <h1>✅ 회원 기능 간단 확인</h1>
+
+  <h2>1. 회원가입</h2>
+  <input id="register_id" placeholder="아이디" />
+  <input id="register_pw" type="password" placeholder="비밀번호" />
+  <input id="register_name" placeholder="이름" />
+  <button onclick="register()">가입하기</button>
+  <p id="register_result"></p>
+
+  <h2>2. 로그인</h2>
+  <input id="login_id" placeholder="아이디" />
+  <input id="login_pw" type="password" placeholder="비밀번호" />
+  <button onclick="login()">로그인</button>
+  <p id="login_result"></p>
+
+  <h2>3. 로그아웃</h2>
+  <button onclick="logout()">로그아웃</button>
+  <p id="logout_result"></p>
+
+  <h2>4. 회원목록 가져오기</h2>
+  <button onclick="getUserList()">회원목록</button>
+  <pre id="userlist_result"></pre>
+
+  <h2>5. 로그인 세션 확인</h2>
+  <button onclick="checkSession()">로그인 정보 확인</button>
+  <pre id="session_result"></pre>
+
+  <script>
+    const BASE_URL = "http://localhost:9093/user"; // 필요하면 포트 변경
+
+    async function register() {
+      const userId = document.getElementById('register_id').value;
+      const password = document.getElementById('register_pw').value;
+      const name = document.getElementById('register_name').value;
+      const res = await fetch(BASE_URL + "/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, password, name })
+      });
+      const text = await res.text();
+      document.getElementById('register_result').innerText = text;
+    }
+
+    async function login() {
+      const userId = document.getElementById('login_id').value;
+      const password = document.getElementById('login_pw').value;
+      const res = await fetch(BASE_URL + "/login", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, password })
+      });
+      const text = await res.text();
+      document.getElementById('login_result').innerText = text;
+    }
+
+    async function logout() {
+      const res = await fetch(BASE_URL + "/logout", {
+        credentials: "include"
+      });
+      const text = await res.text();
+      document.getElementById('logout_result').innerText = text;
+    }
+
+    async function getUserList() {
+      const res = await fetch(BASE_URL + "/list", {
+        credentials: "include"
+      });
+      const data = await res.json();
+      document.getElementById('userlist_result').innerText = JSON.stringify(data, null, 2);
+    }
+
+    async function checkSession() {
+      const res = await fetch(BASE_URL + "/session", {
+        method: "GET",
+        credentials: "include"
+      });
+      if (res.ok) {
+        const data = await res.json();
+        document.getElementById('session_result').innerText = JSON.stringify(data, null, 2);
+      } else {
+        const text = await res.text();
+        document.getElementById('session_result').innerText = 'Error: ' + text;
+      }
+    }
+  </script>
+</body>
+</html>

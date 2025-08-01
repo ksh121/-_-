@@ -1,0 +1,148 @@
+/* ================================
+   📄 TalentDetail.css (완성 버전)
+   ================================ */
+
+/* 기본 레이아웃 */
+.talent-detail-box {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  color: #333;
+}
+
+/* 제목 */
+.talent-title {
+  font-size: 28px;
+  color: #007bff;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 10px;
+}
+
+/* 정보 내용 */
+.talent-info p {
+  font-size: 16px;
+  margin: 12px 0;
+  line-height: 1.6;
+}
+
+.talent-info strong {
+  display: inline-block;
+  width: 100px;
+  font-weight: bold;
+  color: #444;
+}
+
+/* 이미지 리스트 */
+.talent-images {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.talent-image {
+  width: 180px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.talent-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* 로딩/에러 메시지 */
+.loading-message,
+.error-message {
+  max-width: 600px;
+  margin: 100px auto;
+  padding: 20px;
+  font-size: 18px;
+  color: #666;
+  text-align: center;
+}
+
+/* ================================
+   ✅ 버튼 컨테이너
+   ================================ */
+.talent-detail-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ================================
+   ✅ 버튼 공통 (btn 네이밍 일치)
+   ================================ */
+.btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+/* ================================
+   ✅ 기능별 버튼
+   ================================ */
+
+.btn.edit-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn.edit-btn:hover {
+  background-color: #218838;
+}
+
+.btn.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn.delete-btn:hover {
+  background-color: #b02a37;
+}
+
+.btn.request-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn.request-btn:hover {
+  background-color: #0056b3;
+}
+
+/* ================================
+   ✅ 폼 input, select 공통 스타일
+   ================================ */
+
+.talent-detail-box input[type='text'],
+.talent-detail-box select,
+.talent-detail-box input[type='file'] {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.talent-detail-box input[type='text']:focus,
+.talent-detail-box select:focus {
+  border-color: #007bff;
+  outline: none;
+}

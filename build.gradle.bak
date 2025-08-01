@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '3.3.6'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'dev.mvc'
+version = '1.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // --- Spring Boot Core ---
+    implementation 'org.springframework.boot:spring-boot-starter-web'             // Web MVC + REST, 톰캣 내장
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'         // JPA (Hibernate) + Spring Data JPA
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'        // Thymeleaf 템플릿 엔진
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'               // Thymeleaf 레이아웃 지원
+    implementation 'org.springframework.boot:spring-boot-starter-validation'       // Bean Validation (javax.validation)
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'        // WebSocket + STOMP 지원
+
+    // --- Database & JDBC Drivers ---
+    implementation 'com.oracle.database.jdbc:ojdbc8:21.17.0.0'                      // Oracle JDBC 드라이버
+    testImplementation 'com.h2database:h2'                                          // H2 인메모리 DB (테스트용)
+
+    // --- Utility Libraries ---
+    implementation 'commons-codec:commons-codec:1.16.0'                             // 인코딩/디코딩 유틸
+    implementation 'commons-io:commons-io:2.16.1'                                   // 파일/스트림 관련 유틸
+    implementation 'commons-fileupload:commons-fileupload:1.5'                      // 파일 업로드 지원
+
+    // --- JSON & Mail ---
+    implementation 'org.json:json:20240303'                                         // JSON 처리 라이브러리
+    implementation 'com.sun.mail:javax.mail:1.6.2'                                  // Javax Mail (메일 전송)
+    implementation 'javax.activation:activation:1.1.1'                              // Javax Activation (메일 첨부 등)
+
+    // --- Lombok ---
+    compileOnly 'org.projectlombok:lombok'                                          // Lombok (컴파일 시 코드 생성)
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // --- Development & Testing ---
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'                // 개발 편의용 자동 재시작 등
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'          // 테스트용 스프링 부트 테스트 라이브러리
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'                     // JUnit 플랫폼 런처
+
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

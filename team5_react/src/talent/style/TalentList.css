@@ -1,0 +1,156 @@
+/* TalentList.css */
+
+/* posts-box, post-item, post-header 등 기존 MainPage.css랑 같은 이름 쓰면 충돌 위험 있으니 */
+/* 네임스페이스로 talent- 붙여서 작성 */
+
+.talent-posts-box {
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.talent-posts-title {
+  font-weight: 550;
+  color: #333;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.talent-post-item {
+   display: flex;
+  align-items: center; /* 이미지와 텍스트 세로 가운데 정렬 */
+  gap: 20px;
+  border: 1px solid #e1e5e9;
+  border-radius: 15px;
+  padding: 20px 25px;
+  transition: box-shadow 0.3s, transform 0.2s;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.talent-post-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.talent-post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.talent-post-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 8px 0;
+}
+
+.talent-post-content {
+  color: #555;
+  line-height: 1.5;
+  font-size: 16px;
+  margin: 0;
+}
+
+.talent-post-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.talent-post-author {
+  font-size: 14px;
+  color: #666;
+}
+
+.talent-post-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.talent-post-actions button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.2s;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.talent-post-actions button.edit {
+  background-color: #28a745;
+  color: white;
+}
+
+.talent-post-actions button.edit:hover {
+  background-color: #218838;
+}
+
+.talent-post-actions button.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.talent-post-actions button.delete:hover {
+  background-color: #c82333;
+}
+
+.talent-post-actions button.request {
+  background-color: #007bff;
+  color: white;
+}
+
+.talent-post-actions button.request:hover {
+  background-color: #0056b3;
+}
+
+/* input, select 스타일 */
+.talent-post-item input[type='text'],
+.talent-post-item select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.talent-thumbnail {
+  flex-shrink: 0;
+  width: 120px;  /* 원하는 썸네일 너비 */
+  height: 90px;  /* 원하는 썸네일 높이 */
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.15);
+}
+
+.talent-post-content-wrapper {
+  display: flex;
+  justify-content: space-between; /* 좌우 끝으로 배치 */
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%; /* 가득 채움 */
+}
+.talent-post-texts {
+  flex-grow: 1; /* 텍스트 영역 최대한 넓힘 */
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-left: 5%;
+}
+
+.talent-post-actions-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* 아래쪽 정렬 */
+  gap: 8px;
+  align-items: flex-end; /* 오른쪽 끝 정렬 */
+  min-width: 130px;
+}

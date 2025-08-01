@@ -1,0 +1,384 @@
+import React, { useState, useContext, useEffect } from 'react';
+import '../App.css';
+import { useNavigate, Link } from 'react-router-dom';
+import { GlobalContext } from '../components/GlobalContext';
+import SearchBar  from '../searchBar/SearchBar';
+function enter_chk(event, nextTag) {
+  if (event.keyCode === 13) {
+    document.getElementById(nextTag).focus();
+  }
+}
+
+function UserLogin() {
+  const [id, setId] = useState('');
+  const [saveId, setSaveId] = useState(false);
+  const [passwd, setPasswd] = useState('');
+  const [savePasswd, setSavePasswd] = useState(false);
+
+  const { sw, setSw, userno, setUserno, loginUser, setLoginUser } = useContext(GlobalContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedId = localStorage.getItem('savedUserId');
+    const storedPasswd = localStorage.getItem('savedUserPasswd');
+
+    if (storedId) {
+      setId(storedId);
+      setSaveId(true);
+    }
+
+    if (storedPasswd) {
+      setPasswd(storedPasswd);
+      setSavePasswd(true);
+    }
+  }, []);
+
+  //  useEffect(() => {
+  //     fetch('/user/session', {
+  //       method: 'GET',
+  //       credentials: 'include',
+  //     })
+  //       .then(res => res.json())
+  //       .then(data => {
+  //         if (data.sw && data.user) {
+  //           setSw(true);
+  //           setUserno(data.user.userno);
+  //           setLoginUser(data.user);
+  //           //localStorage.setItem('loginUser', JSON.stringify(data.user)); // 선택
+  //         } else {
+  //           setSw(false);
+  //           setUserno(0);
+  //           setLoginUser(null);
+  //         }
+  //       })
+  //       .catch(err => {
+  //         console.error('세션 확인 실패:', err);
+  //       });
+  //   }, []);
+
+  const idChange = (e) => {
+    const value = e.target.value;
+    setId(value);
+    if (saveId) {
+      localStorage.setItem('savedUserId', value);
+    }
+  };
+
+  const passwdChange = (e) => {
+    const value = e.target.value;
+    setPasswd(value);
+    if (savePasswd) {
+      localStorage.setItem('savedUserPasswd', value);
+    }
+  };
+
+  const saveIdChange = (e) => {
+    const checked = e.target.checked;
+    setSaveId(checked);
+    if (checked) {
+      localStorage.setItem('savedUserId', id);
+    } else {
+      localStorage.removeItem('savedUserId');
+    }
+  };
+
+  const savePasswdChange = (e) => {
+    const checked = e.target.checked;
+    setSavePasswd(checked);
+    if (checked) {
+      localStorage.setItem('savedUserPasswd', passwd);
+    } else {
+      localStorage.removeItem('savedUserPasswd');
+    }
+  };
+
+  const send = (event) => {
+    event.preventDefault();
+    if (!id || !passwd) {
+      alert('아이디와 패스워드를 입력해주세요.');
+      return;
+    }
+
+    fetch('/user/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ userId: id, password: passwd }),
+    })
+      .then((res) => res.text())
+      .then((text) => {
+        if (text.includes('성공')) {
+          fetch('/user/session', {
+        method: 'GET',
+        credentials: 'include',
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.sw && data.user) {
+            setSw(true);
+            setUserno(data.user.userno);
+            setLoginUser(data.user);
+            //localStorage.setItem('loginUser', JSON.stringify(data.user)); // 선택
+          } else {
+            setSw(false);
+            setUserno(0);
+            setLoginUser(null);
+          }
+        })
+        .catch(err => {
+          console.error('세션 확인 실패:', err);
+        });
+        } else {
+          console.log(id)
+          console.log(passwd)
+          alert('로그인 실패: 아이디 또는 비밀번호가 일치하지 않습니다.');
+          setSw(false);
+          setUserno(null);
+        }
+      })
+      .catch((err) => {
+        console.error('로그인 오류:', err);
+        alert('서버 오류가 발생했습니다.');
+      });
+  };
+
+  const test = () => {
+    setId('kimgyuhwa123');
+    setPasswd('1234');
+  };
+
+  const adminTest = () => {
+    setId('testId');
+    setPasswd('1234');
+  };
+
+  const handleClick = () => {
+    navigate('/components/Main'); // 페이지 이동
+  }
+
+  return (
+    <div style={{ 
+      display: 'flex', 
+      justifyContent: 'center',
+      alignItems: 'center', 
+      minHeight: '100vh',
+      backgroundColor: '#f5f5f5',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      {sw === true ? (
+        <div style={{
+          width: '600px',
+          height: '450px',
+          backgroundColor: 'white',
+          borderRadius: '20px',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          textAlign: 'center',
+          fontSize: '18px',
+          color: '#333'
+        }}>
+            <div style={{ marginBottom: '20px' }}>
+              사용자 로그인 성공했습니다.
+            </div>
+            <button 
+              onClick={handleClick}
+              style={{
+                padding: '12px 24px',
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '16px',
+                cursor: 'pointer',
+                textDecoration: 'none'
+                
+              }}
+            >
+              메인으로 돌아가기
+            </button>
+
+          </div>
+          
+        
+        
+      ) : (
+        <div style={{
+          width: '600px',
+          height: '450px',
+          backgroundColor: 'white',
+          borderRadius: '20px',
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.1)',
+          padding: '30px',
+          boxSizing: 'border-box'
+        }}>
+          <h3 style={{ 
+            textAlign: 'center', 
+            marginBottom: '25px', 
+            color: '#333',
+            fontSize: '22px',
+            fontWeight: '600'
+          }}>
+            사용자 로그인
+          </h3>
+          
+          <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ marginBottom: '12px' }}>
+              <input
+                type="text"
+                id="id"
+                placeholder="아이디"
+                name="id"
+                autoFocus={true}
+                onKeyDown={e => enter_chk(e, 'passwd')}
+                onChange={idChange}
+                value={id}
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e1e5e9',
+                  borderRadius: '10px',
+                  fontSize: '16px',
+                  outline: 'none',
+                  transition: 'border-color 0.3s',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#007bff'}
+                onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
+              />
+            </div>
+            
+            <div style={{ marginBottom: '12px', display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+              <input
+                type="checkbox"
+                id="saveId"
+                checked={saveId}
+                onChange={saveIdChange}
+                style={{ marginRight: '8px' }}
+              />
+              <label htmlFor="saveId" style={{ color: '#666', cursor: 'pointer' }}>아이디 저장</label>
+            </div>
+
+            <div style={{ marginBottom: '12px' }}>
+              <input
+                type="password"
+                id="passwd"
+                placeholder="패스워드"
+                name="passwd"
+                onKeyDown={e => enter_chk(e, 'btnSend')}
+                onChange={passwdChange}
+                value={passwd}
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  border: '2px solid #e1e5e9',
+                  borderRadius: '10px',
+                  fontSize: '16px',
+                  outline: 'none',
+                  transition: 'border-color 0.3s',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#007bff'}
+                onBlur={(e) => e.target.style.borderColor = '#e1e5e9'}
+              />
+            </div>
+            
+            <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', fontSize: '14px' }}>
+              <input
+                type="checkbox"
+                id="savePasswd"
+                checked={savePasswd}
+                onChange={savePasswdChange}
+                style={{ marginRight: '8px' }}
+              />
+              <label htmlFor="savePasswd" style={{ color: '#666', cursor: 'pointer' }}>패스워드 저장</label>
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+              <button 
+                id="btnSend" 
+                onClick={send}
+                style={{
+                  flex: '1',
+                  padding: '12px',
+                  backgroundColor: '#007bff',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
+              >
+                로그인
+              </button>
+              
+              <button 
+                id="btnTest" 
+                type="button" 
+                onClick={test}
+                style={{
+                  flex: '1',
+                  padding: '12px',
+                  backgroundColor: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#545b62'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#6c757d'}
+              >
+                사용자 계정
+              </button>
+              <button 
+                id="btnTest" 
+                type="button" 
+                onClick={adminTest}
+                style={{
+                  flex: '1',
+                  padding: '12px',
+                  backgroundColor: '#6c757d',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.3s'
+                }}
+                onMouseOver={(e) => e.target.style.backgroundColor = '#545b62'}
+                onMouseOut={(e) => e.target.style.backgroundColor = '#6c757d'}
+              >
+                관리자Test계정
+              </button>
+            </div>
+
+            <div style={{ marginTop: '10px' }}>
+              <Link to="/user/univCert" style={{ marginRight: '10px' }}>
+                학교 인증하기   
+              </Link>
+              <Link to="/user/findId" style={{ marginRight: '10px' }}>    
+                아이디 찾기   
+              </Link>
+              <Link to="/user/findPwd">  
+                비밀번호 찾기  
+              </Link>
+            </div>
+          </div>
+          </div>
+      )}
+      
+    </div>
+  );
+}
+
+export default UserLogin;
