@@ -33,7 +33,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-### llm ###
-__pycache__/
-*.pyc
