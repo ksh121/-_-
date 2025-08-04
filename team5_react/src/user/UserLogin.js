@@ -74,7 +74,7 @@ function UserLogin({ isModalOpen = true, closeModal = () => {} }) {
       return;
     }
 
-    fetch('/user/login', {
+    fetch('http://121.78.128.212:9093/user/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -83,7 +83,7 @@ function UserLogin({ isModalOpen = true, closeModal = () => {} }) {
       .then((res) => res.text())
       .then((text) => {
         if (text.includes('성공')) {
-          fetch('/user/session', {
+          fetch('http://121.78.128.212:9093/user/session', {
         method: 'GET',
         credentials: 'include',
       })
@@ -104,8 +104,8 @@ function UserLogin({ isModalOpen = true, closeModal = () => {} }) {
           console.error('세션 확인 실패:', err);
         });
         } else {
-          console.log(id)
-          console.log(passwd)
+          // console.log(id)
+          // console.log(passwd)
           alert('로그인 실패: 아이디 또는 비밀번호가 일치하지 않습니다.');
           setSw(false);
           setUserno(null);

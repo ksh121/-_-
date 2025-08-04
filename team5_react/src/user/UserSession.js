@@ -6,7 +6,7 @@ function UserSession() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`/user/session`, {
+    fetch(`http://121.78.128.212:9093/user/session`, {
       method: 'GET',
       credentials: 'include',  // 세션 쿠키 포함
     })
