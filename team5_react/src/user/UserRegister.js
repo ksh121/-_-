@@ -17,7 +17,7 @@ function UserRegister() {
     phone: '',
     zipcode: '',
     address: '',
-    language: '',
+    //language: '',
     location: '',
     bio: '',
     role: '',

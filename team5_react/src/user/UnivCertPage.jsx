@@ -37,7 +37,7 @@ function UnivCertPage() {
 
   // 검색 필터링
   const filteredSchools = schools.filter(school =>
-    school.schoolname.toLowerCase().includes(searchTerm.toLowerCase())
+    school.schoolname?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // 학교 선택 핸들러

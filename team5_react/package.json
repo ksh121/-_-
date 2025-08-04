@@ -2,7 +2,7 @@
   "name": "team5_react",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:9093",
+  "proxy": "http://121.78.128.212:9093",
   "dependencies": {
     "@craco/craco": "^7.1.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
