@@ -24,7 +24,7 @@ public class FileUploadServiceImpl implements FileUploadService {
     private final FileUploadRepository fileUploadRepository;
     private final TalentRepository talentRepository; // ⭐ Talent 조회를 위한 주입
 
-    private String uploadBasePath = "C:/kd/deploy/team5/storage";
+    private String uploadBasePath = "/home/ubuntu/deploy/team5/storage";
 
     @Override
     public FileUploadDTO saveFile(MultipartFile file, String targetType, Long talentno, String profile) {

@@ -19,7 +19,7 @@ public class FileUpload1Service {
     private final FileUpload1Repository fileUploadRepository;
 
    // @Value("${file.upload-dir}") // ex: C:/kd/upload
-    private  String uploadDir = "C:/kd/deploy/team5/storage/user";
+    private  String uploadDir = "/home/ubuntu/deploy/team5/storage/user";
 
     public FileUpload1 uploadFile(MultipartFile multipartFile, String purpose, String targetType, Long targetId) throws IOException {
       if (multipartFile.isEmpty()) return null;
