@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import {getIP} from '../components/Tool';
 
 function AdminActivityList() {
     const [activityLogs, setActivityLogs] = useState([]);
@@ -27,7 +28,7 @@ function AdminActivityList() {
                 params.action = actionFilter;
             }
 
-            const res = await axios.get('/activityLog/admin/all', { params });
+            const res = await axios.get(`${getIP()}/activityLog/admin/all`, { params });
             
             console.log("활동 로그 데이터:", res.data);
             setActivityLogs(res.data.content || []);
