@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TalentTypeUpdate from './TalentTypeUpdate';
 import TalentDelete from './TalentDelete';
+import {getIP} from '../../components/Tool';
 
 export default function TalentTypeList() {
   const [data, setData] = useState([]);
   const [keyword, setKeyword] = useState('');
 
   const fetchData = async () => {
-    const res = await axios.get(`/talent_type/list?keyword=${keyword}`);
+    const res = await axios.get(`${getIP()}/talent_type/list?keyword=${keyword}`);
     setData(res.data.content);
   };
 

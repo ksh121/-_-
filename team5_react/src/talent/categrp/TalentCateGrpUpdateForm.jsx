@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../style/TalentCateGrp.css';
+import {getIP} from '../../components/Tool';
 
 const TalentCateGrpUpdateForm = ({ grp, onUpdated, onCancel }) => {
   const [name, setName] = useState(grp.name);
@@ -11,7 +12,7 @@ const TalentCateGrpUpdateForm = ({ grp, onUpdated, onCancel }) => {
     e.preventDefault();
     try {
       const dto = { cateGrpno: grp.cateGrpno, name };
-      await axios.put('/talent_cate_grp/update', dto);
+      await axios.put(`${getIP()}/talent_cate_grp/update`, dto);
       setMessage('수정 완료');
       setError(false);
       onUpdated();

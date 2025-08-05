@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../components/GlobalContext";
 import uploadFile from "../../fileupload/FileUpload";
+import {getIP} from '../../components/Tool';
 
 function TalentUpdate() {
   const { talentno } = useParams();
@@ -24,7 +25,7 @@ function TalentUpdate() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch(`/talent/detail/${talentno}`)
+    fetch(`${getIP()}/talent/detail/${talentno}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("📦 불러온 데이터", data);
@@ -42,13 +43,13 @@ function TalentUpdate() {
   }, [talentno]);
 
   useEffect(() => {
-    fetch("/talent_type/list").then((res) => res.json()).then((data) => setTypeList(data.content || []));
-    fetch("/talent_cate_grp/list").then((res) => res.json()).then((data) => setCateGrpList(data.content || []));
+    fetch(`${getIP()}/talent_type/list`).then((res) => res.json()).then((data) => setTypeList(data.content || []));
+    fetch(`${getIP()}/talent_cate_grp/list`).then((res) => res.json()).then((data) => setCateGrpList(data.content || []));
   }, []);
 
   useEffect(() => {
     if (form.cateGrpno) {
-      fetch(`/talent_category/list-by-categrp/${form.cateGrpno}`)
+      fetch(`${getIP()}/talent_category/list-by-categrp/${form.cateGrpno}`)
         .then((res) => res.json())
         .then((data) => setCategoryList(data));
     }
@@ -115,7 +116,7 @@ function TalentUpdate() {
 
       console.log("📤 수정 요청 DTO:", dto);
 
-      const res = await fetch(`/talent/update/${talentno}`, {
+      const res = await fetch(`${getIP()}/talent/update/${talentno}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto),
@@ -129,7 +130,7 @@ function TalentUpdate() {
       }
 
       alert("수정 완료!");
-      navigate(`/talent/detail/${talentno}`);
+      navigate(`${getIP()}/talent/detail/${talentno}`);
     } catch (e) {
       alert("오류: " + e.message);
     }

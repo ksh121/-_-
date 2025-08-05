@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import TalentCategoryUpdateForm from './TalentCategoryUpdateForm';
+import {getIP} from '../../components/Tool';
 
 const TalentCategoryItem = ({ category, onDeleted, onUpdated }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -8,7 +9,7 @@ const TalentCategoryItem = ({ category, onDeleted, onUpdated }) => {
   const handleDelete = async () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       try {
-        await axios.delete(`/talent_category/delete/${category.categoryno}`);
+        await axios.delete(`${getIP()}/talent_category/delete/${category.categoryno}`);
         onDeleted();
       } catch (err) {
         console.error('삭제 실패', err);

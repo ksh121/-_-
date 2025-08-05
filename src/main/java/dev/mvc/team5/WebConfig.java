@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**") // URL 경로
-                .addResourceLocations("file:///home/ubuntu/deploy/team5/storage"); 
+                .addResourceLocations("file:///home/ubuntu/deploy/team5/storage/"); 
     }
 }
 

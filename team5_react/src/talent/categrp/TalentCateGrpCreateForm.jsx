@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../style/TalentCateGrp.css';
+import {getIP} from '../../components/Tool';
 
 const TalentCateGrpCreateForm = ({ onCreated }) => {
   const [name, setName] = useState('');
@@ -11,7 +12,7 @@ const TalentCateGrpCreateForm = ({ onCreated }) => {
     e.preventDefault();
     try {
       const dto = { name };
-      const res = await axios.post('/talent_cate_grp/save', dto);
+      const res = await axios.post(`${getIP()}/talent_cate_grp/save`, dto);
       setMessage(`등록 성공: ${res.data.name}`);
       setName('');
       setError(false);

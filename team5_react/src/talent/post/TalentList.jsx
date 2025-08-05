@@ -4,6 +4,7 @@ import axios from 'axios';
 import { GlobalContext } from '../../components/GlobalContext'; // GlobalContext 경로 확인
 import { useNavigate } from 'react-router-dom';
 import uploadFile from '../../fileupload/FileUpload';
+import {getIP} from '../../components/Tool';
 
 const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
     // ⭐ selectedCateGrpno 추가 ⭐
@@ -56,7 +57,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
 
         console.log("요청 파라미터:", params.toString());
 
-        axios.get(`/talent/search?${params.toString()}`)
+        axios.get(`${getIP()}/talent/search?${params.toString()}`)
             .then(res => {
                 const fetchedTalents = res.data.content || [];
                 setTotalPages(res.data.totalPages || 1);
@@ -78,7 +79,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
             const ratingMap = {};
             await Promise.all(talents.map(async (t) => {
                 try {
-                    const res = await axios.get(`/reviews/average-rating/${t.talentno}`);
+                    const res = await axios.get(`${getIP()}/reviews/average-rating/${t.talentno}`);
                     ratingMap[t.talentno] = parseFloat(res.data).toFixed(1);
                 } catch (e) {
                     console.error(`평점 가져오기 실패: talentno=${t.talentno}`, e);
@@ -97,8 +98,8 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
 
     // 타입, 대분류 카테고리 목록을 한 번만 가져오는 useEffect
     useEffect(() => {
-        axios.get('/talent_type/list').then(res => setTypeList(res.data.content));
-        axios.get('/talent_cate_grp/list')
+        axios.get(`${getIP()}/talent_type/list`).then(res => setTypeList(res.data.content));
+        axios.get(`${getIP()}/talent_cate_grp/list`)
             .then(async (res) => {
                 const grpList = res.data.content;
                 const grpListWithCategories = await Promise.all(grpList.map(async (grp) => {
@@ -112,7 +113,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
     // editForm.cateGrpno가 변경될 때 소분류 카테고리 목록을 가져오는 useEffect
     useEffect(() => {
         if (editForm.cateGrpno) {
-            axios.get(`/talent_category/list-by-categrp/${editForm.cateGrpno}`)
+            axios.get(`${getIP()}/talent_category/list-by-categrp/${editForm.cateGrpno}`)
                 .then(res => setCategoryList(res.data))
                 .catch(() => setCategoryList([]));
         } else {
@@ -160,7 +161,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
                 categoryno: Number(editForm.categoryno),
                 fileInfos: uploadedFileData,
             };
-            const res = await fetch('/talent/update', {
+            const res = await fetch(`${getIP()}/talent/update`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dto),
@@ -180,7 +181,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
     const deleteTalent = async (id) => {
         if (!window.confirm('정말 삭제하시겠습니까?')) return;
         try {
-            const res = await fetch(`/talent/delete/${id}`, { method: 'DELETE' });
+            const res = await fetch(`${getIP()}/talent/delete/${id}`, { method: 'DELETE' });
             if (!res.ok) throw new Error('삭제 실패');
             alert('삭제 완료');
             if (onDeleted) onDeleted();

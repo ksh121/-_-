@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {getIP} from '../components/Tool';
 
 const uploadFile = async (files, targetType, talentno, profile) => {
   const formData = new FormData();
@@ -7,7 +8,7 @@ const uploadFile = async (files, targetType, talentno, profile) => {
   formData.append('talentno', talentno);
   formData.append('profile', profile);
 
-  const response = await axios.post('/api/file/upload-multiple', formData, {
+  const response = await axios.post(`${getIP()}/api/file/upload-multiple`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 

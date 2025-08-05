@@ -7,7 +7,7 @@ function UserLogout() {
   const { setSw, setUserno, setLoginUser } = useContext(GlobalContext);
 
   useEffect(() => {
-    fetch(`/user/logout`, {
+    fetch(`${getIP()}/user/logout`, {
       method: 'GET'
     })
       .then(result => result.text())

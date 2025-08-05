@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TalentCategoryItem from './TalentCategoryItem';
+import {getIP} from '../../components/Tool';
 
 const TalentCategoryList = ({ refresh }) => {
   const [listData, setListData] = useState(null);
@@ -12,7 +13,7 @@ const TalentCategoryList = ({ refresh }) => {
   const fetchList = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('/talent_category/list', {
+      const res = await axios.get(`${getIP()}/talent_category/list`, {
         params: { keyword, page, size, sort: 'categoryno,desc' },
       });
       setListData(res.data);

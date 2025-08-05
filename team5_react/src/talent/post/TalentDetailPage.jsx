@@ -8,6 +8,7 @@ import ReviewPage from "../../review/ReviewPage";
 import TalentProfileCard from "../../user/profile/TalentProfileCard"; 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import {getIP} from '../../components/Tool';
 
 function TalentDetailPage() {
   const { talentno } = useParams();
@@ -27,7 +28,7 @@ function TalentDetailPage() {
 
 
   useEffect(() => {
-    fetch(`/talent/detail/${talentno}`)
+    fetch(`${getIP()}/talent/detail/${talentno}`)
       .then((res) => {
         if (!res.ok) throw new Error("서버 오류");
         return res.json();
@@ -65,7 +66,7 @@ function TalentDetailPage() {
   if (!talent?.userno) return alert("상대방 정보가 없습니다.");
 
   try {
-    const res = await axios.post("/chatroom/findOrCreate", null, {
+    const res = await axios.post(`${getIP()}/chatroom/findOrCreate`, null, {
       params: {
         senderId: loginUser.userno,
         receiverId: talent.userno,
@@ -75,7 +76,7 @@ function TalentDetailPage() {
       withCredentials: true,
     });
     const roomId = res.data.chatRoomno;
-    await axios.post(`/chatroom/${roomId}/enter/${loginUser.userno}`);
+    await axios.post(`${getIP()}/chatroom/${roomId}/enter/${loginUser.userno}`);
     navigate(`/chat/${roomId}`);
   } catch (err) {
     alert("채팅방 오류: " + err.message);
@@ -89,7 +90,7 @@ function TalentDetailPage() {
   const deleteTalent = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
     try {
-      const res = await fetch(`/talent/delete/${talent.talentno}`, {
+      const res = await fetch(`${getIP()}/talent/delete/${talent.talentno}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("삭제 실패");
@@ -110,7 +111,7 @@ function TalentDetailPage() {
       message: "재능 요청합니다.",
     };
     try {
-      await fetch("/request/save", {
+      await fetch(`${getIP()}/request/save`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto),

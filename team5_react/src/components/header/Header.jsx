@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../GlobalContext';
 import ChatRoom from '../../chat/ChatRoom';
 import axios from 'axios';
+import {getIP} from '../Tool';
 
 function Header( { openLoginModal } ) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -89,7 +90,7 @@ const handleRequestList = () => {
   const userno = loginUser?.userno;
   const size = 3;  // 한번에 보여줄 알림 개수
  const loadMore = () => {
-  fetch(`/notifications/user/${userno}?page=${page}&size=${size}`)
+  fetch(`${getIP()}/notifications/user/${userno}?page=${page}&size=${size}`)
     .then(res => res.json())
     .then(data => {
       setNotificationList(prev => {
@@ -120,7 +121,7 @@ const handleRequestList = () => {
   const handleNotificationItemClick = async (notification) => {
     try {
       // 1. 알림을 읽음으로 표시하는 API 호출
-      await axios.put(`/notifications/read/${notification.notificationno}`);
+      await axios.put(`${getIP()}/notifications/read/${notification.notificationno}`);
 
       // 2. 프론트엔드 상태 업데이트
       setUnreadCount(prevCount => Math.max(0, prevCount - 1)); // 읽지 않은 알림 개수 감소
@@ -183,7 +184,7 @@ const handleRequestList = () => {
       /* ⭐ -------------  SSE 구독  -------------- */
   // 이미 열려 있으면 그대로 둔다
   if (!eventSrcRef.current) {
-    const es = new EventSource(`/sse/notifications/${userno}`);
+    const es = new EventSource(`${getIP()}/sse/notifications/${userno}`);
     eventSrcRef.current = es;
 
     // 일반 메시지 수신
@@ -209,13 +210,13 @@ const handleRequestList = () => {
   /* ----------------------------------------- */
 
     // 채팅 목록 API 호출
-   fetch(`/chatroom/user/${userno}/chatlist`, { credentials: 'include' })
+   fetch(`${getIP()}/chatroom/user/${userno}/chatlist`, { credentials: 'include' })
     .then(res => res.json())
     .then(async rooms => {
       // rooms: [{ chatRoomno, roomName, createdAt }, ...]
       const withLast = await Promise.all(
         rooms.map(async r => {
-          const res = await fetch(`/message/${r.chatRoomno}/last-message`);
+          const res = await fetch(`${getIP()}/message/${r.chatRoomno}/last-message`);
           const last = await res.json();     // {content, createdAt}
           //console.log(last)
           return {
@@ -244,7 +245,7 @@ const handleRequestList = () => {
     //   });
     
       // 안읽은 알림 개수
-      fetch(`/notifications/user/${userno}/unreadCount`)
+      fetch(`${getIP()}/notifications/user/${userno}/unreadCount`)
       .then(res => res.json())
       .then(count => {
         setUnreadCount(count);
@@ -264,7 +265,7 @@ const handleRequestList = () => {
   const handleCloseChat = () => setOpenChatId(null);
 
   const handleLogout = () => {
-    fetch('/user/logout', { method: 'GET' })
+    fetch(`${getIP()}/user/logout`, { method: 'GET' })
       .then(result => result.text())
       .then(text => {
         console.log('->', text);
@@ -285,13 +286,13 @@ const handleRequestList = () => {
   const handleMarkAllRead = () => {
   if (!userno) return;
 
-  fetch(`/notifications/user/${userno}/readAll`, {
+  fetch(`${getIP()}/notifications/user/${userno}/readAll`, {
     method: 'PUT',
   })
     .then(res => {
        if (!res.ok) throw new Error('실패');
       // 읽음 처리 완료되면 최신 알림 목록 재요청
-      return fetch(`/notifications/user/${userno}?page=0&size=3`)
+      return fetch(`${getIP()}/notifications/user/${userno}?page=0&size=3`)
     })
     .then(res => res.json())
     .then(data => {

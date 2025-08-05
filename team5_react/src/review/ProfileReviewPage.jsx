@@ -2,6 +2,8 @@ import React, { useContext,useEffect, useState } from 'react';
 import { FaStar } from "react-icons/fa";
 import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
+import {getIP} from '../components/Tool';
+
 const ProfileReviewPage = ({
   receiverno,
   showForm = true,
@@ -31,7 +33,7 @@ console.log('GlobalContext:', context);
   //   setReceivedReviews(res.data);
   // };
   const fetchReceived = async (page = 0) => {
-  const res = await axios.get(`/reviews/receiver/${receiverno}`, {
+  const res = await axios.get(`${getIP()}/reviews/receiver/${receiverno}`, {
     params: { page, size: 3},
   });
   setReceivedReviews(res.data);   //이거고침
@@ -41,7 +43,7 @@ console.log('GlobalContext:', context);
 
   // 작성한 리뷰 가져오기
   const fetchGiven = async () => {
-    const res = await axios.get(`/reviews/giver/${giverno}`);
+    const res = await axios.get(`${getIP()}/reviews/giver/${giverno}`);
     setGivenReviews(res.data);
   };
 
@@ -55,7 +57,7 @@ console.log('GlobalContext:', context);
       rating: parseInt(form.rating),
       comments: form.comments
     };
-    await axios.post('/reviews', data);
+    await axios.post(`${getIP()}/reviews`, data);
     setForm({ receiver: '', rating: '', comments: '' });
     fetchGiven();
     fetchReceived();
@@ -74,7 +76,7 @@ console.log('GlobalContext:', context);
         const summarizeReviews = async () => {
             try {
                 // 이 부분에서 receiverno와 reviewComments가 제대로 보내지는지 확인
-                const res = await axios.post('/reviews/summary/receiver', { 
+                const res = await axios.post(`${getIP()}/reviews/summary/receiver`, { 
                     receiverNo: receiverno, // receiverno도 함께 보냄
                     reviewComments: reviewComments 
                 }); 

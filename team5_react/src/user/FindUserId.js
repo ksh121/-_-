@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, User, Shield, CheckCircle, AlertCircle } from 'lucide-react';
+import {getIP} from '../components/Tool';
 
 function FindUserId() {
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ function FindUserId() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('/user/sendCode', {
+      const response = await fetch(`${getIP()}/user/sendCode`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email }),
@@ -51,7 +52,7 @@ function FindUserId() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('/user/verifyCode', {
+      const response = await fetch(`${getIP()}/user/verifyCode`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, code }),

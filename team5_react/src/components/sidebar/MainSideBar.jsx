@@ -3,7 +3,7 @@ import { Plus, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../GlobalContext';
 import axios from "axios";
-
+import {getIP} from '../Tool';
 
 function MainSideBar() {
     const [hoveredCategory, setHoveredCategory] = useState(null);
@@ -85,11 +85,11 @@ function MainSideBar() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const grpRes = await axios.get('/talent_cate_grp/list?keyword=');
+                const grpRes = await axios.get(`${getIP()}/talent_cate_grp/list?keyword=`);
                 const cateGrpList = grpRes.data.content;
 
                 const result = await Promise.all(cateGrpList.map(async (grp) => {
-                    const cateRes = await axios.get(`/talent_category/list-by-categrp/${grp.cateGrpno}`);
+                    const cateRes = await axios.get(`${getIP()}/talent_category/list-by-categrp/${grp.cateGrpno}`);
                     return {
                         id: grp.cateGrpno,
                         name: grp.name,

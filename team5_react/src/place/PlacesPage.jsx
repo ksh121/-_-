@@ -4,6 +4,7 @@ import PlaceSideBar from '../components/sidebar/PlaceSideBar';
 import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
 import { useNavigate } from 'react-router-dom';
+import {getIP} from '../components/Tool';
 
 const PlacePage = ({place}) => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const PlacePage = ({place}) => {
         if (!schoolno) return;
 
         // 학교 '관' 목록을 직접 가져오는 API 호출
-        const res = await axios.get(`/places/list-by-school/${schoolno}`);
+        const res = await axios.get(`${getIP()}/places/list-by-school/${schoolno}`);
         const gwanList = res.data; // 응답이 '관' 목록 배열이라고 가정
 
         // '관' 목록을 카테고리 형식으로 변환
@@ -90,7 +91,7 @@ const PlacePage = ({place}) => {
             schoolgwanno: selectedCategory.categoryId, // 선택된 카테고리 ID를 schoolgwanno로 사용
             size: 5 // 카테고리 선택 시 사이즈
           };
-          res = await axios.get(`/places/places/list-by-school-and-gwan`, { params });
+          res = await axios.get(`${getIP()}/places/places/list-by-school-and-gwan`, { params });
             //console.log('관선택->',res.data);
             //console.log('API 호출 파라미터 (관 선택):', params);
         } else {
@@ -99,7 +100,7 @@ const PlacePage = ({place}) => {
             ...commonParams,
             schoolno: schoolno,
           };
-          res = await axios.get(`/places/places/list-by-school/${schoolno}`, { params });
+          res = await axios.get(`${getIP()}/places/places/list-by-school/${schoolno}`, { params });
             console.log('전부->',res.data);
             //console.log('API 호출 파라미터 (전체):', params);
         }

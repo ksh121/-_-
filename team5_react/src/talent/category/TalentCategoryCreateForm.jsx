@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import {getIP} from '../../components/Tool';
 
 const TalentCategoryCreateForm = ({ onCreated }) => {
   const [name, setName] = useState('');
@@ -8,7 +9,7 @@ const TalentCategoryCreateForm = ({ onCreated }) => {
   const [cateGrpList, setCateGrpList] = useState([]);
 
   useEffect(() => {
-    axios.get('/talent_cate_grp/list')
+    axios.get(`${getIP()}/talent_cate_grp/list`)
       .then(res => setCateGrpList(res.data.content))
       .catch(err => console.error('대분류 목록 조회 실패', err));
   }, []);
@@ -23,7 +24,7 @@ const TalentCategoryCreateForm = ({ onCreated }) => {
 
     try {
       const dto = { name, cateGrpno: Number(cateGrpno) };
-      const response = await axios.post('/talent_category/save', dto);
+      const response = await axios.post(`${getIP()}/talent_category/save`, dto);
       setMessage(`등록 성공: ${response.data.name}`);
       setName('');
       setCateGrpNo('');

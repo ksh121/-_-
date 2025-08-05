@@ -1,6 +1,7 @@
 import React, { useEffect, useState,useContext } from 'react';
 import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
+import {getIP} from '../components/Tool';
 
 export default function BlockedUserList({ userno }) {
   const [blockedUsers, setBlockedUsers] = useState([]);
@@ -8,7 +9,7 @@ export default function BlockedUserList({ userno }) {
 
   const fetchBlockedUsers = async () => {
     try {
-      const res = await axios.get(`/blocks/list/${loginUser?.userno}`);
+      const res = await axios.get(`${getIP()}/blocks/list/${loginUser?.userno}`);
       setBlockedUsers(res.data);
     } catch (error) {
       console.error('차단 목록 불러오기 실패', error);
@@ -19,7 +20,7 @@ export default function BlockedUserList({ userno }) {
     const confirmUnblock = window.confirm('정말 이 사용자를 차단 해제하시겠습니까?');
     if (confirmUnblock) {
         try {
-        await axios.delete(`/blocks/unblock`, {
+        await axios.delete(`${getIP()}/blocks/unblock`, {
             params: {
             blockerUserno: loginUser?.userno,
             blockedUserno: blockedUserno,

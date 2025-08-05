@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
 import './style/ChatBotList.css';
+import {getIP} from '../components/Tool';
 
 function MyChatBotListPage() {
   const { loginUser } = useContext(GlobalContext);
@@ -16,8 +17,8 @@ function MyChatBotListPage() {
     if (!loginUser) return;
 
     const url = searchText.trim()
-      ? `/chatbot/list/search?content=${encodeURIComponent(searchText)}&page=${page}&size=10`
-      : `/chatbot/list/${loginUser.userno}?page=${page}&size=10`;
+      ? `${getIP()}/chatbot/list/search?content=${encodeURIComponent(searchText)}&page=${page}&size=10`
+      : `${getIP()}/chatbot/list/${loginUser.userno}?page=${page}&size=10`;
 
     axios.get(url)
       .then((res) => {
@@ -37,7 +38,7 @@ function MyChatBotListPage() {
     if (!window.confirm('이 항목을 삭제할까요?')) return;
 
     axios
-      .delete(`/chatbot/delete/${chatbotno}`)
+      .delete(`${getIP()}/chatbot/delete/${chatbotno}`)
       .then(() => {
         alert('삭제 완료');
         loadList();

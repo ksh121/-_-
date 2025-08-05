@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import {getIP} from '../components/Tool';
 
 function UserSession() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
 
   useEffect(() => {
-    fetch(`http://121.78.128.212:9093/user/session`, {
+    fetch(`${getIP()}/user/session`, {
       method: 'GET',
       credentials: 'include',  // 세션 쿠키 포함
     })

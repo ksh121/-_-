@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { X, Menu, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../components/GlobalContext';
+import {getIP} from '../components/Tool';
 
 function PlaceDetailPage() {
   const { placeno } = useParams();
@@ -88,15 +89,15 @@ function PlaceDetailPage() {
   };
 
   useEffect(() => {
-    axios.get(`/places/${placeno}`)
+    axios.get(`${getIP()}/places/${placeno}`)
       .then(res => setPlace(res.data))
       .catch(err => console.error('장소 정보 로딩 실패', err));
 
-    axios.get(`/class-schedule/by-place/${placeno}`)
+    axios.get(`${getIP()}/class-schedule/by-place/${placeno}`)
       .then(res => setSchedules(res.data))
       .catch(err => console.error('스케줄 로딩 실패', err));
 
-    axios.get(`/reservations/by-place/${placeno}`)
+    axios.get(`${getIP()}/reservations/by-place/${placeno}`)
       .then(res => setReservations(res.data))
       .catch(err => console.error('예약 로딩 실패', err));
 
@@ -259,7 +260,7 @@ function PlaceDetailPage() {
         status: '예약됨'
       };
 
-      const res = await axios.post('/reservations', requestData);
+      const res = await axios.post(`${getIP()}/reservations`, requestData);
       console.log('예약 성공:', res.data);
 
       alert('예약이 완료되었습니다.');

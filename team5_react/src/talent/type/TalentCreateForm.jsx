@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {getIP} from '../../components/Tool';
 
 export default function TalentCreateForm() {
   const [name, setName] = useState('');
@@ -8,7 +9,7 @@ export default function TalentCreateForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/talent_type/save', { name });
+      await axios.post(`${getIP()}/talent_type/save`, { name });
       setName('');
       setMessage('등록 성공');
       window.location.reload();

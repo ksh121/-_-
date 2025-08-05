@@ -1,6 +1,7 @@
 import React, { useState, useContext,  } from 'react';
 import axios from 'axios';
 import { GlobalContext } from "../components/GlobalContext";
+import {getIP} from '../components/Tool';
 
 const CreateRoomModal = ({ isOpen, onClose, onCreated }) => {
   const [roomName, setRoomName] = useState('');
@@ -30,7 +31,7 @@ const CreateRoomModal = ({ isOpen, onClose, onCreated }) => {
         creatorId: loginUser?.userno, // 또는 loginUser.userno 등
       };
 
-      const response = await axios.post('/chatroom/open', payload);
+      const response = await axios.post(`${getIP()}/chatroom/open`, payload);
 
       onCreated(response.data);
       onClose();

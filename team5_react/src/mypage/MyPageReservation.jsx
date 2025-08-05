@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect  } from 'react';
 import { Search, Calendar, Clock, CalendarX, GraduationCap, Filter, ChevronDown, ChevronUp, CalendarCheck } from 'lucide-react';
 import { GlobalContext } from '../components/GlobalContext';
 import _ from 'lodash';
+import {getIP} from '../components/Tool';
 
 const MyPageReservation = () => {
   const { loginUser } = useContext(GlobalContext); 
@@ -15,7 +16,7 @@ const MyPageReservation = () => {
 
 const fetchReservations = async () => {
   try {
-    const response = await axios.get(`/reservations/user/${loginUser.userno}`);
+    const response = await axios.get(`${getIP()}/reservations/user/${loginUser.userno}`);
     setReservations(response.data);
   } catch (error) {
     console.error('예약 정보를 가져오는 중 오류 발생:', error);
@@ -51,7 +52,7 @@ useEffect(() => {
 const handleCancel = (reservationno) => {
   if (window.confirm("정말 취소하시겠습니까?")) {
     // 취소 API 호출
-    axios.patch(`/reservations/${reservationno}/cancel`)
+    axios.patch(`${getIP()}/reservations/${reservationno}/cancel`)
       .then(() => {
         alert("예약이 취소되었습니다.");
         // 예약 목록 다시 불러오기 또는 상태 업데이트

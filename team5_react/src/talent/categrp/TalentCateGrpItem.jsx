@@ -2,13 +2,14 @@
 import React, { useState } from 'react';
 import TalentCateGrpUpdateForm from './TalentCateGrpUpdateForm';
 import axios from 'axios';
+import {getIP} from '../../components/Tool';
 
 const TalentCateGrpItem = ({ item, onUpdated, onDeleted }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleDelete = async () => {
     try {
-    const res = await axios.get(`/talent_cate_grp/check-deletable/${item.cateGrpno}`);
+    const res = await axios.get(`${getIP()}/talent_cate_grp/check-deletable/${item.cateGrpno}`);
     const count = res.data;
 
     const ok = window.confirm(
@@ -20,7 +21,7 @@ const TalentCateGrpItem = ({ item, onUpdated, onDeleted }) => {
     if (!ok) return;
 
     // 자식도 함께 삭제하는 요청
-    await axios.delete(`/talent_cate_grp/delete/${item.cateGrpno}`);
+    await axios.delete(`${getIP()}/talent_cate_grp/delete/${item.cateGrpno}`);
 
     alert('삭제 완료');
     onDeleted();

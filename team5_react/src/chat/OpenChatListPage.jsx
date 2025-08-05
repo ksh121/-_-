@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
 import { useNavigate } from 'react-router-dom';
+import {getIP} from '../components/Tool';
 
 const OpenChatListPage = () => {
   const [publicRooms, setPublicRooms] = useState([]);
@@ -24,7 +25,7 @@ const OpenChatListPage = () => {
 
     try {
       await axios.post(
-        `/chatroom/${roomId}/enter/${loginUser.userno}`,
+        `${getIP()}/chatroom/${roomId}/enter/${loginUser.userno}`,
         null,
         { params: { password } }
       );
@@ -39,7 +40,7 @@ const OpenChatListPage = () => {
   };
 
   useEffect(() => {
-    axios.get('/chatroom/public')
+    axios.get(`${getIP()}/chatroom/public`)
       .then(res => setPublicRooms(res.data))
       .catch(err => {
         console.error('공개 채팅방 목록 불러오기 실패:', err);

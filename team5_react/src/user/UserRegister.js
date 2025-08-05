@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { User, Lock, Mail, School, Phone, MapPin, Globe, UserPlus, ArrowLeft, Check, X } from "lucide-react";
+import {getIP} from '../components/Tool';
 
 function UserRegister() {
   const [email] = useState("example@university.ac.kr"); // 인증된 이메일
@@ -59,7 +60,7 @@ function UserRegister() {
       return;
     }
     try {
-      const res = await fetch(`/user/checkId?userId=${encodeURIComponent(form.userId)}`);
+      const res = await fetch(`${getIP()}/user/checkId?userId=${encodeURIComponent(form.userId)}`);
       const data = await res.json(); // { sw: true/false, msg: '...' } 형태 가정
       if (data.sw === true) {
         setIdCheckMsg('사용 가능한 아이디입니다.');
@@ -97,7 +98,7 @@ function UserRegister() {
     
     setIsLoading(true);
     try {
-      const res = await fetch(`/user/register`, {
+      const res = await fetch(`${getIP()}/user/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

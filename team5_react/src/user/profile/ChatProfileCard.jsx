@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GlobalContext } from '../../components/GlobalContext';
 import ReviewPage from '../../review/ProfileCardReviewPage'; // ⭐ 리뷰 요약 컴포넌트 사용
+import {getIP} from '../../components/Tool';
 
 const ChatProfileCard = () => {
   const { loginUser } = useContext(GlobalContext);
@@ -14,7 +15,7 @@ const ChatProfileCard = () => {
   useEffect(() => {
     if (!userno) return;
 
-    axios.get(`/talent/count-by-user?userno=${userno}`)
+    axios.get(`${getIP()}/talent/count-by-user?userno=${userno}`)
       .then(res => {
         console.log('-> data: ', res.data);
         setTalentCount(res.data)})
@@ -31,7 +32,7 @@ const ChatProfileCard = () => {
       >
         <img
           src={loginUser.profileImage
-            ? `/uploads/user/${loginUser.profileImage}`
+            ? `${getIP()}/uploads/user/${loginUser.profileImage}`
             : '/default_profile.png'}
           alt="프로필"
           className="w-12 h-12 rounded-full object-cover"

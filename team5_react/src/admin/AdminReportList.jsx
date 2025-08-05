@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import { AlertCircle, CheckCircle2, XCircle } from "lucide-react";
+import {getIP} from '../components/Tool';
 
 /**
  * 관리자 신고 목록 페이지
@@ -23,7 +24,7 @@ function AdminReportList() {
     if (status !== "ALL") params.status = status;
 
     axios
-      .get("/reports", { params })
+      .get(`${getIP()}/reports`, { params })
       .then((res) => {
         setReports(res.data.content || []);
         setTotalPages(res.data.totalPages || 0);
@@ -36,7 +37,7 @@ function AdminReportList() {
   /* 상태 변경 */
   const changeStatus = (id, newStatus) => {
     axios
-      .put(`/reports/${id}/status`, newStatus, {
+      .put(`${getIP()}/reports/${id}/status`, newStatus, {
         headers: { "Content-Type": "text/plain" },
       })
       .then(fetchReports)
@@ -47,7 +48,7 @@ function AdminReportList() {
   const deleteReport = (id) => {
     if (!window.confirm("삭제하시겠습니까?")) return;
     axios
-      .delete(`/reports/${id}`)
+      .delete(`${getIP()}/reports/${id}`)
       .then(fetchReports)
       .catch(() => alert("삭제 실패"));
   };

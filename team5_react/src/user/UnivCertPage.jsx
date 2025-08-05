@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { User, Mail, School, Shield, ArrowRight, Check, Search, X, ArrowLeft} from "lucide-react";
+import {getIP} from '../components/Tool';
 
 function UnivCertPage() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ function UnivCertPage() {
     // 컴포넌트가 처음 렌더링 될 때 학교 목록을 가져옴
     const fetchSchools = async () => {
       try {
-        const res = await axios.get("/schools/list");
+        const res = await axios.get(`${getIP()}/schools/list`);
         // 예상 응답 예: [{schoolno:1, schoolname:"서울대학교"}, {...}, ...]
         setSchools(res.data);
       } catch (err) {
@@ -61,7 +62,7 @@ function UnivCertPage() {
   // 1. 인증 메일 보내기
   const sendEmail = async () => {
     try {
-      await axios.post("/user/univ/sendCode", {
+      await axios.post(`${getIP()}/user/univ/sendCode`, {
         email,
         schoolName
       });
@@ -75,7 +76,7 @@ function UnivCertPage() {
   // 2. 인증번호 확인
   const verifyCode = async () => {
     try {
-      const res = await axios.post("/user/univ/verifyCode", {
+      const res = await axios.post(`${getIP()}/user/univ/verifyCode`, {
         email,
         schoolName,
         code: parseInt(code),

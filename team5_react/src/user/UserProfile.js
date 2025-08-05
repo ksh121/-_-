@@ -3,6 +3,7 @@ import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import { User, Info, Phone, Mail, Edit, Trash2 } from 'lucide-react';
+import {getIP} from '../components/Tool';
 
 function UserProfile() {
   const { userno, setSw, setUserno, loginUser, setLoginUser } = useContext(GlobalContext);
@@ -23,7 +24,7 @@ function UserProfile() {
   });
 
   const [profileFile, setProfileFile] = useState(null); // ⭐ 업로드할 파일
-  const baseUrl = "/uploads/user/";     // user 추가  << 폴더명
+  const baseUrl = `${getIP()}/uploads/user/`;     // user 추가  << 폴더명
  
   // 사용자 정보 불러오기 (필요시 API 호출 추가)
   useEffect(() => {
@@ -50,7 +51,7 @@ function UserProfile() {
   formData.append('targetId', userno);
 
   try {
-    const res = await fetch('/fileupload/upload', {
+    const res = await fetch(`${getIP()}/fileupload/upload`, {
       method: 'POST',
       credentials: 'include',
       body: formData,
@@ -84,7 +85,7 @@ function UserProfile() {
     formData.append('targetId', userno);
 
     try {
-      const res = await fetch('/fileupload/upload', {
+      const res = await fetch(`${getIP()}/fileupload/upload`, {
         method: 'POST',
         credentials: 'include',
         body: formData,
@@ -113,7 +114,7 @@ function UserProfile() {
   }
 
   try {
-    const res = await fetch('/user/update', {
+    const res = await fetch(`${getIP()}/user/update`, {
       method: 'POST',
       body: formData,
       credentials: 'include',
@@ -138,7 +139,7 @@ function UserProfile() {
   const handleDelete = () => {
   if (!window.confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
 
-  axios.patch(`/user/${userno}/deactivate`)
+  axios.patch(`${getIP()}/user/${userno}/deactivate`)
     .then((res) => {
       const msg = res.data?.msg || '삭제 완료';
       alert(msg);

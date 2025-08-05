@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {getIP} from '../../components/Tool';
 
 const TalentCategoryUpdateForm = ({ category, onUpdated, onCancel }) => {
   const [name, setName] = useState(category.name);
@@ -15,7 +16,7 @@ const TalentCategoryUpdateForm = ({ category, onUpdated, onCancel }) => {
         cateGrpno: category.cateGrp.cateGrpno
       };
 
-      await axios.put('/talent_category/update', dto);
+      await axios.put(`${getIP()}/talent_category/update`, dto);
       setMessage('수정 완료');
       if (onUpdated) onUpdated();
     } catch (err) {

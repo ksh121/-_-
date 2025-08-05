@@ -6,6 +6,7 @@ import { GlobalContext } from '../../components/GlobalContext';
 //import ReviewPage from '../../review/ProfileReviewPage';
 import ProfileReviewPage from '../../review/ProfileReviewPage';
 import ReviewPage from '../../review/ProfileCardReviewPage';
+import {getIP} from '../../components/Tool';
 
 function TalentProfileCard({ talent, isOwner, startChat, sendRequest }) {
   const { loginUser } = useContext(GlobalContext);
@@ -21,7 +22,7 @@ function TalentProfileCard({ talent, isOwner, startChat, sendRequest }) {
   useEffect(() => {
   if (!userno) return;
 
-  axios.get(`/talent/count-by-user?userno=${userno}`)
+  axios.get(`${getIP()}/talent/count-by-user?userno=${userno}`)
     .then(res => {
       console.log('-> 게시물 개수 : ', res.data);
       setTalentCount(res.data)})
@@ -31,7 +32,7 @@ function TalentProfileCard({ talent, isOwner, startChat, sendRequest }) {
 
   // 작성한 리뷰 목록
   useEffect(() => {
-    axios.get(`/user/admin/${userno}/reviews`)
+    axios.get(`${getIP()}/user/admin/${userno}/reviews`)
       .then(res => {
         console.log("✅ 리뷰 응답 확인:", res.data.content);
         setReviews(res.data.content); // 🔹 리뷰 리스트만 추출
@@ -49,7 +50,7 @@ function TalentProfileCard({ talent, isOwner, startChat, sendRequest }) {
       >
         <img
           src={userData?.profileImage
-            ? `/uploads/user/${userData.profileImage}`
+            ? `${getIP()}/uploads/user/${userData.profileImage}`
             : "/default_profile.png"}
           alt="프로필"
           className="w-24 h-24 rounded-full object-cover mb-3"

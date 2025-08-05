@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { User, Info, Mail, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../components/GlobalContext';
+import {getIP} from '../components/Tool';
 
 /* ▶ 공통 스타일 */
 const fieldWrap = { marginBottom: 10 };
@@ -17,7 +18,7 @@ export default function MyPageProfile() {
   const [form, setForm]             = useState({});
   const [profileFile, setProfileFile] = useState(null);
   const userno  = loginUser?.userno;
-  const baseUrl = '/uploads/user/';
+  const baseUrl = `${getIP()}/uploads/user/`;
 
   /* 최초·Context 변경 시 form 채우기 */
   useEffect(() => { loginUser && setForm(loginUser); }, [loginUser]);
@@ -41,7 +42,7 @@ export default function MyPageProfile() {
     if (profileFile) fd.append('profileImage', profileFile);
 
     try {
-      const res = await fetch('/user/update', { method:'POST', body:fd, credentials:'include' });
+      const res = await fetch(`${getIP()}/user/update`, { method:'POST', body:fd, credentials:'include' });
       const json = await res.json();
       if (json.sw) {
         setLoginUser(json.user);                // Context 갱신

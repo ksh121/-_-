@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FaStar } from "react-icons/fa";
 import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
+import {getIP} from '../components/Tool';
 
 const ReviewPage = ({ talentno, receiverno }) => {
     const { userno: giverno, loginUser } = useContext(GlobalContext); // giverno는 리뷰 작성자
@@ -39,7 +40,7 @@ const ReviewPage = ({ talentno, receiverno }) => {
         if (!talentno) return; // talentno가 없으면 호출하지 않음
         try {
             // 새로운 API 엔드포인트 사용: /reviews/talent/{talentno}
-            const res = await axios.get(`/reviews/talent/${talentno}`, {
+            const res = await axios.get(`${getIP()}/reviews/talent/${talentno}`, {
                 params: { page, size: 5 }, // 한 페이지에 5개씩
 
             });
@@ -56,7 +57,7 @@ const ReviewPage = ({ talentno, receiverno }) => {
     const fetchGiven = async () => {
         if (!giverno) return; // giverno가 없으면 호출하지 않음
         try {
-            const res = await axios.get(`/reviews/giver/${giverno}`);
+            const res = await axios.get(`${getIP()}/reviews/giver/${giverno}`);
             setGivenReviews(res.data);
         } catch (error) {
             console.error("작성한 리뷰 가져오기 실패:", error);
@@ -90,7 +91,7 @@ const ReviewPage = ({ talentno, receiverno }) => {
 
         try {
             // 새로운 리뷰 작성 API 엔드포인트 사용: /reviews/talent
-            await axios.post('/reviews/talent', data);
+            await axios.post(`${getIP()}/reviews/talent`, data);
             alert('리뷰가 성공적으로 등록되었습니다.');
             // 폼 초기화 시 talentno와 receiverno를 다시 prop에서 받아오도록
             setForm({ rating: '', comments: '', talentno: talentno });
@@ -120,7 +121,7 @@ const ReviewPage = ({ talentno, receiverno }) => {
             const summarizeReviews = async () => {
                 try {
                   
-                    const res = await axios.post('/reviews/summary/talent', {
+                    const res = await axios.post(`${getIP()}/reviews/summary/talent`, {
                         talentNo: talentno, // ⭐ talentNo를 보냄 (기존 receiverNo 대신)
                         reviewComments: reviewComments
                     });

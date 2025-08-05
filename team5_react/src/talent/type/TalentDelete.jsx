@@ -1,11 +1,12 @@
 import React from 'react';
 import axios from 'axios';
+import {getIP} from '../../components/Tool';
 
 export default function TalentDelete({ typeno }) {
   const handleDelete = async () => {
     if (!window.confirm('정말 삭제하시겠습니까?')) return;
     try {
-      await axios.delete(`/talent_type/delete/${typeno}`);
+      await axios.delete(`${getIP()}/talent_type/delete/${typeno}`);
       window.location.reload();
     } catch (err) {
       alert('삭제 실패: ' + err.message);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import {getIP} from '../components/Tool';
 
 function AdminUserList() {
   const [users, setUsers] = useState([]);
@@ -16,7 +17,7 @@ function AdminUserList() {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get('/user/admin/users', {
+      const res = await axios.get(`${getIP()}/user/admin/users`, {
         params: {
           keyword: keyword.trim(),
           page: page,
@@ -31,7 +32,7 @@ function AdminUserList() {
   };
 const handleDetail = async (userno) => {
   try {
-    const res = await axios.get(`/user/admin/detail/${userno}`);
+    const res = await axios.get(`${getIP()}/user/admin/detail/${userno}`);
       setSelectedUser(res.data);
       setShowModal(true);
       setReviewPage(0);   // 리뷰 페이징 초기화
@@ -44,7 +45,7 @@ const handleDetail = async (userno) => {
   // 사용자 리뷰 목록 API 호출
   const fetchUserReviews = async (userno, page) => {
     try {
-      const res = await axios.get(`/user/admin/${userno}/reviews`, {
+      const res = await axios.get(`${getIP()}/user/admin/${userno}/reviews`, {
         params: {
           page: page,
           size: 2,
@@ -74,7 +75,7 @@ const handleDetail = async (userno) => {
   const newUsername = prompt('새 닉네임 입력', user.username);
   if (!newUsername) return;
 
-  axios.put(`/user/admin/update/${user.userno}`, {
+  axios.put(`${getIP()}/user/admin/update/${user.userno}`, {
     ...user,
     username: newUsername,
   }).then(() => {
@@ -88,7 +89,7 @@ const handleDetail = async (userno) => {
 const handleDelete = (userno) => {
   if (!window.confirm('정말 탈퇴시키겠습니까?')) return;
 
-  axios.patch(`/user/${userno}/deactivate`)
+  axios.patch(`${getIP()}/user/${userno}/deactivate`)
     .then(() => {
       alert('삭제 완료');
       fetchUsers();

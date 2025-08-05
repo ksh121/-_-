@@ -3,6 +3,7 @@ import axios from 'axios';
 import { GlobalContext } from '../../components/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 import SearchBar from '../../searchBar/MyPage_SearchBar'; 
+import {getIP} from '../../components/Tool';
 
 const MyTalentList = () => {
   const [talents, setTalents] = useState([]);
@@ -37,7 +38,7 @@ const MyTalentList = () => {
       params.append('keyword', keyword.trim());
     }
 
-    axios.get(`/talent/my-talents?${params.toString()}`, { withCredentials: true })
+    axios.get(`${getIP()}/talent/my-talents?${params.toString()}`, { withCredentials: true })
       .then(res => {
         setTalents(res.data.content || []);
         setTotalPages(res.data.totalPages || 1);
@@ -57,7 +58,7 @@ const MyTalentList = () => {
     const ratingMap = {};
     await Promise.all(talents.map(async (t) => {
       try {
-        const res = await axios.get(`/reviews/average-rating/${t.talentno}`);
+        const res = await axios.get(`${getIP()}/reviews/average-rating/${t.talentno}`);
         ratingMap[t.talentno] = parseFloat(res.data).toFixed(1);
       } catch (e) {
         console.error(`평점 가져오기 실패: talentno=${t.talentno}`, e);

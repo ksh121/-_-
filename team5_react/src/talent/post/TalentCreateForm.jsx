@@ -4,6 +4,7 @@ import axios from 'axios';
 import { GlobalContext } from '../../components/GlobalContext';
 import '../style/TalentCreateForm.css';
 import { useNavigate } from "react-router-dom";
+import {getIP} from '../../components/Tool';
 
 const TalentCreateForm = ({ onCreated }) => {
   // 기존 상태
@@ -28,14 +29,14 @@ const TalentCreateForm = ({ onCreated }) => {
   };
 
   useEffect(() => {
-    axios.get('/talent_cate_grp/list')
+    axios.get(`${getIP()}/talent_cate_grp/list`)
       .then(res => setCateGrpList(res.data.content))
       .catch(err => console.error('대분류 목록 불러오기 실패', err));
   }, []);
 
   useEffect(() => {
     if (cateGrpno) {
-      axios.get(`/talent_category/list-by-categrp/${cateGrpno}`)
+      axios.get(`${getIP()}/talent_category/list-by-categrp/${cateGrpno}`)
         .then(res => setCategoryList(res.data))
         .catch(err => {
           console.error('소분류 목록 불러오기 실패', err);
@@ -49,7 +50,7 @@ const TalentCreateForm = ({ onCreated }) => {
   }, [cateGrpno]);
 
   useEffect(() => {
-    axios.get('/talent_type/list')
+    axios.get(`${getIP()}/talent_type/list`)
       .then(res => setTypeList(res.data.content))
       .catch(err => console.error('타입 목록 불러오기 실패', err));
   }, []);
@@ -112,7 +113,7 @@ const TalentCreateForm = ({ onCreated }) => {
       categoryno: Number(categoryno),
     };
 
-    const saveRes = await axios.post('/talent/save', dto);
+    const saveRes = await axios.post(`${getIP()}/talent/save`, dto);
     const savedTalent = saveRes.data; // 등록된 재능 정보 (talentno 포함)
 
     // 2. 파일 업로드 (파일이 있으면)
@@ -125,7 +126,7 @@ const TalentCreateForm = ({ onCreated }) => {
       formData.append('talentno', savedTalent.talentno); // 여기 반드시 등록된 talentno 넣기
       formData.append('profile', 'attachment');
 
-      await axios.post('/api/file/upload-multiple', formData, {
+      await axios.post(`${getIP()}/api/file/upload-multiple`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
     }

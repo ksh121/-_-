@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {getIP} from '../../components/Tool';
 
 export default function TalentTypeUpdate({ typeno, currentName }) {
   const [editMode, setEditMode] = useState(false);
@@ -7,7 +8,7 @@ export default function TalentTypeUpdate({ typeno, currentName }) {
 
   const handleUpdate = async () => {
     try {
-      await axios.put('/talent_type/update', { typeno, name });
+      await axios.put(`${getIP()}/talent_type/update`, { typeno, name });
       setEditMode(false);
       window.location.reload();
     } catch (err) {

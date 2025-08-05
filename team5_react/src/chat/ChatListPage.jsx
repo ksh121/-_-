@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { GlobalContext } from '../components/GlobalContext';
+import {getIP} from '../components/Tool';
 
 const ChatListPage = () => {
   const { loginUser } = useContext(GlobalContext);
@@ -17,7 +18,7 @@ const ChatListPage = () => {
   const handleDeleteRoom = async (chatRoomno) => {
     if (!window.confirm('정말 이 채팅방을 삭제하시겠습니까?')) return;
     try {
-      await axios.delete(`/chatroom/${chatRoomno}`);
+      await axios.delete(`${getIP()}/chatroom/${chatRoomno}`);
       setChatRooms((prev) => prev.filter((room) => room.chatRoomno !== chatRoomno));
     } catch (err) {
       console.error('채팅방 삭제 실패:', err);
@@ -27,7 +28,7 @@ const ChatListPage = () => {
 
   useEffect(() => {
     if (!userId) return;
-    axios.get(`/chatroom/user/${userId}/chatlist`)
+    axios.get(`${getIP()}/chatroom/user/${userId}/chatlist`)
       .then(res => setChatRooms(res.data))
       .catch(err => {
         console.error('채팅방 목록 가져오기 실패:', err);

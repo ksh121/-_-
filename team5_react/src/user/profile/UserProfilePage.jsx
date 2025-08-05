@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ReviewPage from '../../review/ProfileReviewPage';
+import {getIP} from '../../components/Tool';
 
 function UserProfilePage() {
   const { userno } = useParams();
@@ -14,21 +15,21 @@ function UserProfilePage() {
 
   // 유저 정보 불러오기
   useEffect(() => {
-    axios.get(`/user/public/detail/${userno}`)
+    axios.get(`${getIP()}/user/public/detail/${userno}`)
       .then(res => setUser(res.data))
       .catch(err => console.error("프로필 조회 실패", err));
   }, [userno]);
 
   // 유저가 받은 리뷰
   useEffect(() => {
-    axios.get(`/user/admin/${userno}/reviews`)
+    axios.get(`${getIP()}/user/admin/${userno}/reviews`)
       .then(res => setReviews(res.data.content || []))
       .catch(err => console.error("리뷰 조회 실패", err));
   }, [userno]);
 
   // 유저가 작성한 게시글 목록
   useEffect(() => {
-    axios.get(`/talent/user/${userno}/posts`)
+    axios.get(`${getIP()}/talent/user/${userno}/posts`)
       .then(res => setUserTalents(res.data || []))
       .catch(err => console.error("유저 게시물 조회 실패", err));
   }, [userno]);
@@ -39,7 +40,7 @@ function UserProfilePage() {
     <div className="max-w-5xl mx-auto mt-10 p-6 border rounded-xl shadow bg-white">
       {/* 프로필 정보 */}
       <img
-        src={user.profileImage ? `/uploads/user/${user.profileImage}` : "/default_profile.png"}
+        src={user.profileImage ? `${getIP()}/uploads/user/${user.profileImage}` : "/default_profile.png"}
         alt="프로필"
         className="w-32 h-32 rounded-full object-cover mx-auto mb-4"
       />

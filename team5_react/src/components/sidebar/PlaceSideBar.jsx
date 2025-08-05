@@ -3,6 +3,7 @@ import { Plus, Menu } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { GlobalContext } from '../GlobalContext'; // loginUser에서 schoolno 얻기 위해
+import {getIP} from '../Tool';
 
 function PlaceSideBar({ setSelectedCategory, selectedCategory }) {
   const [openCategory, setOpenCategory] = useState(null);
@@ -46,7 +47,7 @@ function PlaceSideBar({ setSelectedCategory, selectedCategory }) {
         const schoolno = loginUser?.schoolno;
         if (!schoolno) return;
 
-        const res = await axios.get(`/places/list-by-school/${schoolno}`);
+        const res = await axios.get(`${getIP()}/places/list-by-school/${schoolno}`);
         const gwanList = res.data;
 
         const categoryResult = gwanList.map(gwan => ({

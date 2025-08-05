@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { GlobalContext } from '../components/GlobalContext';
 
+import {getIP} from '../components/Tool';
+
 function enter_chk(event, nextTag) {
   if (event.keyCode === 13) {
     document.getElementById(nextTag).focus();
@@ -74,7 +76,7 @@ function UserLogin({ isModalOpen = true, closeModal = () => {} }) {
       return;
     }
 
-    fetch('http://121.78.128.212:9093/user/login', {
+    fetch(`${getIP()}/user/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -82,8 +84,9 @@ function UserLogin({ isModalOpen = true, closeModal = () => {} }) {
     })
       .then((res) => res.text())
       .then((text) => {
+
         if (text.includes('성공')) {
-          fetch('http://121.78.128.212:9093/user/session', {
+          fetch(`${getIP()}/user/session`, {
         method: 'GET',
         credentials: 'include',
       })

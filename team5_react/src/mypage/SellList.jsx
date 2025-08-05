@@ -3,6 +3,7 @@ import { Search, Filter, ChevronDown, ChevronUp, MessageSquare, User, Star, Coin
 import { GlobalContext } from '../components/GlobalContext';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import {getIP} from '../components/Tool';
 
 const RequestList = ({userno}) => {
   const [activeTab, setActiveTab] = useState('purchases'); // 'purchases' or 'sales'
@@ -17,7 +18,7 @@ const RequestList = ({userno}) => {
 
   useEffect(() => {
     // 구매내역 요청
-    axios.get(`/request/purchases/${loginUser.userno}`)
+    axios.get(`${getIP()}/request/purchases/${loginUser.userno}`)
     .then((res) => {
       setPurchases(res.data);
     })
@@ -26,7 +27,7 @@ const RequestList = ({userno}) => {
     });
 
     // 판매내역 요청
-    axios.get(`/request/sales/${loginUser.userno}`)
+    axios.get(`${getIP()}/request/sales/${loginUser.userno}`)
       .then((res) => {
         setSales(res.data);
       })

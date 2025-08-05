@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
+import {getIP} from '../components/Tool';
 
 function FindUserPwd() {
    const [username, setUsername] = useState(''); // 이름
@@ -18,7 +19,7 @@ function FindUserPwd() {
     }
 
     try {
-      const res = await fetch('/user/sendCodePwd', {
+      const res = await fetch(`${getIP()}/user/sendCodePwd`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, userId, email }),
@@ -37,7 +38,7 @@ function FindUserPwd() {
 
   const verifyCode = async () => {
     try {
-      const res = await fetch('/user/verifyCodePwd', {
+      const res = await fetch(`${getIP()}/user/verifyCodePwd`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username,userId ,email, code }),
@@ -61,7 +62,7 @@ function FindUserPwd() {
     }
 
     try {
-      const res = await fetch('/user/resetPwd', {
+      const res = await fetch(`${getIP()}/user/resetPwd`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, userId, email, newPassword: newPwd }),

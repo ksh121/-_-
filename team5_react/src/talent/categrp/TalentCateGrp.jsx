@@ -3,6 +3,7 @@ import TalentCateGrpCreateForm from './TalentCateGrpCreateForm';
 import TalentCateGrpList from './TalentCateGrpList';
 import { GlobalContext } from '../../components/GlobalContext';
 import '../style/TalentCateGrp.css';
+import {getIP} from '../../components/Tool';
 
 const TalentCateGrp = () => {
   const [refreshKey, setRefreshKey] = useState(0);

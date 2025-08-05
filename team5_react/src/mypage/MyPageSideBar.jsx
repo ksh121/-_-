@@ -3,11 +3,12 @@ import React, { useContext } from 'react';
 import { User, Edit3 } from 'lucide-react';
 import { GlobalContext } from '../components/GlobalContext';
 import { useNavigate } from 'react-router-dom';
+import {getIP} from '../components/Tool';
 
 const MyPageSideBar = ({ currentPage }) => {
   const { loginUser } = useContext(GlobalContext);
   const navigate = useNavigate();
-   const baseUrl = '/uploads/user/';
+   const baseUrl = `${getIP()}/uploads/user/`;
 
   const handleTabClick = (tabName) => {
     navigate(`/mypage/Mypage?tab=${tabName}`);

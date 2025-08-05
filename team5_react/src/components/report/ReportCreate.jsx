@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import {getIP} from '../Tool';
 
 const ReportCreate = () => {
   const [reason, setReason] = useState('');
@@ -16,7 +17,7 @@ const ReportCreate = () => {
     if (!reason.trim()) return alert("사유를 입력하세요.");
 
     try {
-      await axios.post('/reports', {
+      await axios.post(`${getIP()}/reports`, {
         reporter: null, // 백엔드에서 세션으로 처리
         reported: parseInt(reported),
         reason,

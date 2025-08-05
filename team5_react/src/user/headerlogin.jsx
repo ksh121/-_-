@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { useNavigate, Link } from 'react-router-dom';
 // import { GlobalContext } from '../components/GlobalContext';
+import {getIP} from '../components/Tool';
 
 function enter_chk(event, nextTag) {
   if (event.keyCode === 13) {

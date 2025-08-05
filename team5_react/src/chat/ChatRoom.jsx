@@ -5,8 +5,9 @@ import { Client } from "@stomp/stompjs";
 import axios from "axios";
 import { GlobalContext } from "../components/GlobalContext";
 import RequestModal from "./components/RequestModal";
+import {getIP} from '../components/Tool';
 
-const SOCKET_URL = "http://localhost:9093/ws-chat";
+const SOCKET_URL = `${getIP()}/ws-chat`;
 
 export default function ChatRoom({ chatRoomno: propChatRoomno }) {
   const { chatRoomno: paramChatRoomno } = useParams();
@@ -31,7 +32,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
 
   useEffect(() => {
-    const url = `/chatroom/${chatRoomno}?loginUserno=${loginUser.userno}`;
+    const url = `${getIP()}/chatroom/${chatRoomno}?loginUserno=${loginUser.userno}`;
     axios.get(url)
       .then(res => {
         const data = res.data;
@@ -57,7 +58,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
       reconnectDelay: 5000,
       onConnect: () => {
         setIsConnected(true);
-        stompClient.current.subscribe(`/topic/chatroom/${chatRoomno}`, msg => {
+        stompClient.current.subscribe(`${getIP()}/topic/chatroom/${chatRoomno}`, msg => {
           const message = JSON.parse(msg.body);
           console.log("알림 수신 메세지", message);
           if (message?.type === "REQUEST" && message?.status === "pending") {
@@ -74,7 +75,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
     });
     stompClient.current.activate();
 
-    axios.get(`/message/chatroom/${chatRoomno}`, { withCredentials: true })
+    axios.get(`${getIP()}/message/chatroom/${chatRoomno}`, { withCredentials: true })
       .then(res => setMessages(res.data))
       .catch(console.error);
 
@@ -84,7 +85,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
   }, [chatRoomno, loginUser?.userno]);
 
   useEffect(() => {
-    axios.get(`/request/chatroom/${chatRoomno}`)
+    axios.get(`${getIP()}/request/chatroom/${chatRoomno}`)
       .then(res => {
         if (res.status === 204) return;
         const req = res.data;
@@ -96,14 +97,14 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
   }, [chatRoomno, loginUser?.userno]);
 
   useEffect(() => {
-    axios.get(`/chatmember/chatroom/${chatRoomno}/members`)
+    axios.get(`${getIP()}/chatmember/chatroom/${chatRoomno}/members`)
       .then(res => setMembers(res.data))
       .catch(console.error);
   }, [chatRoomno]);
 
   const handleAccept = async () => {
     try {
-      await axios.patch(`/request/${pendingRequest.requestno}/accept`);
+      await axios.patch(`${getIP()}/request/${pendingRequest.requestno}/accept`);
       alert("요청을 수락했습니다!");
       setPendingRequest(null);
     } catch (err) {
@@ -113,7 +114,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
   const handleReject = async () => {
     try {
-      await axios.patch(`/request/${pendingRequest.requestno}/reject`);
+      await axios.patch(`${getIP()}/request/${pendingRequest.requestno}/reject`);
       alert("요청을 거절했습니다.");
       setPendingRequest(null);
     } catch (err) {
@@ -132,7 +133,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
   const submitRequest = async ({ message, price }) => {
     try {
-      const res = await axios.get(`/chatroom/${chatRoomno}?loginUserno=${loginUser.userno}`, { withCredentials: true });
+      const res = await axios.get(`${getIP()}/chatroom/${chatRoomno}?loginUserno=${loginUser.userno}`, { withCredentials: true });
       const room = res.data;
       if (!room.talentno) return alert("요청 가능한 게시물이 없습니다.");
       const dto = {
@@ -143,7 +144,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         price,
         chatRoomno: chatRoomno,
       };
-      await axios.post("/request/save", dto);
+      await axios.post(`${getIP()}/request/save`, dto);
       alert("요청이 전송되었습니다!");
       setShowRequestModal(false);
     } catch (error) {

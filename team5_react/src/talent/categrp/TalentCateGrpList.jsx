@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import TalentCateGrpItem from './TalentCateGrpItem';
 import '../style/TalentCateGrp.css';
+import {getIP} from '../../components/Tool';
 
 const TalentCateGrpList = ({ refresh }) => {
   const [listData, setListData] = useState(null);
@@ -14,7 +15,7 @@ const TalentCateGrpList = ({ refresh }) => {
   const fetchList = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('/talent_cate_grp/list', {
+      const res = await axios.get(`${getIP()}/talent_cate_grp/list`, {
         params: { keyword, page, size, sort: 'cateGrpno,desc' },
       });
       setListData(res.data);
