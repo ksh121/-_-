@@ -130,7 +130,7 @@ function TalentUpdate() {
       }
 
       alert("수정 완료!");
-      navigate(`${getIP()}/talent/detail/${talentno}`);
+      navigate(`/talent/detail/${talentno}`);
     } catch (e) {
       alert("오류: " + e.message);
     }
