@@ -37,12 +37,16 @@ dependencies {
 
     // --- Database & JDBC Drivers ---
     implementation 'com.oracle.database.jdbc:ojdbc8:21.17.0.0'                      // Oracle JDBC 드라이버
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
     testImplementation 'com.h2database:h2'                                          // H2 인메모리 DB (테스트용)
 
     // --- Utility Libraries ---
     implementation 'commons-codec:commons-codec:1.16.0'                             // 인코딩/디코딩 유틸
     implementation 'commons-io:commons-io:2.16.1'                                   // 파일/스트림 관련 유틸
     implementation 'commons-fileupload:commons-fileupload:1.5'                      // 파일 업로드 지원
+    
+     // OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
     // --- JSON & Mail ---
     implementation 'org.json:json:20240303'                                         // JSON 처리 라이브러리
@@ -61,6 +65,8 @@ dependencies {
     // --- 대학 인증 ---
     implementation 'com.github.in-seo:univcert:master-SNAPSHOT'
     implementation files('libs/backend-0.0.1-SNAPSHOT.jar')
+    
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 

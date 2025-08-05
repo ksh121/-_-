@@ -58,7 +58,10 @@ const MyTalentList = () => {
     const ratingMap = {};
     await Promise.all(talents.map(async (t) => {
       try {
-        const res = await axios.get(`${getIP()}/reviews/average-rating/${t.talentno}`);
+        const res = await axios.get(
+          `${getIP()}/reviews/average-rating/${t.talentno}`,
+          { withCredentials: true }
+        );
         ratingMap[t.talentno] = parseFloat(res.data).toFixed(1);
       } catch (e) {
         console.error(`평점 가져오기 실패: talentno=${t.talentno}`, e);

@@ -28,7 +28,9 @@ function TalentDetailPage() {
 
 
   useEffect(() => {
-    fetch(`${getIP()}/talent/detail/${talentno}`)
+    fetch(`${getIP()}/talent/detail/${talentno}`, {
+      credentials: "include",
+    })
       .then((res) => {
         if (!res.ok) throw new Error("서버 오류");
         return res.json();
@@ -116,6 +118,7 @@ function TalentDetailPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto),
+        credentials: "include",
       });
       alert("요청 성공!");
     } catch (e) {

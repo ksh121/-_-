@@ -1,4 +1,4 @@
-import { Star,Search, User, ChevronDown, Settings, LogOut, Bell, Menu, Plus, MessageCircle, CalendarCheck, FileText } from 'lucide-react';
+import { Star,Search, User, ChevronDown, Settings, LogOut, Bell, Menu, Plus, MessageCircle, CalendarCheck, FileText, Sparkles } from 'lucide-react';
 import React, { useState, useContext,useEffect,useRef } from 'react';
 import ReactDOM from 'react-dom';
 import UserLogout from '../../user/UserLogout';
@@ -60,6 +60,16 @@ const handleRequestList = () => {
     navigate('/mypage/Mypage?tab=reservation');
     setIsDropdownOpen(false);
   };
+
+  const handleChatbotList = () => {
+    navigate('/mypage/chatbot-list');
+    setIsDropdownOpen(false);
+  };
+
+  const handleMailTranslator = () => {
+  navigate('/mail/translator'); // 원하는 경로로 이동
+  setIsDropdownOpen(false);
+};
 
   const handleAdmin = () => {
     navigate('/admin/user');
@@ -721,6 +731,50 @@ const handleRequestList = () => {
                       예약 확인
 
                     </button>
+
+                    <button
+                    onClick={handleChatbotList}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      width: '100%',
+                      padding: '12px 16px',
+                      fontSize: '14px',
+                      color: '#333',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onMouseOver={(e) => e.target.style.backgroundColor = '#f8f9fa'}
+                    onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+                    >
+                      <Sparkles size={16} style={{ marginRight: '12px' }} />
+                      내 관심사
+
+                    </button>
+
+                    <button
+                      onClick={handleMailTranslator}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        width: '100%',
+                        padding: '12px 16px',
+                        fontSize: '14px',
+                        color: '#333',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s'
+                      }}
+                      onMouseOver={(e) => e.target.style.backgroundColor = '#f8f9fa'}
+                      onMouseOut={(e) => e.target.style.backgroundColor = 'transparent'}
+                    >
+                      <MessageCircle size={16} style={{ marginRight: '12px' }} />
+                      번역 메일 쓰기
+                    </button>
+
                    { loginUser.role == "admin" &&(<button 
                     onClick={handleAdmin}
                     style={{

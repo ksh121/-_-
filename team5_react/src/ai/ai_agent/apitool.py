@@ -95,7 +95,7 @@ def chat_tool(input: str) -> str:
 
     if is_valid_summary(key_info) and userno:
         try:
-            requests.post("http://192.168.12.141:9093/chatbot/api/save", json={"userno": userno, "content": key_info})
+            requests.post("http://121.78.128.212:9093/chatbot/api/save", json={"userno": userno, "content": key_info})
             print("✅ 저장된 중요 정보:", key_info)
         except Exception as e:
             print("❌ 저장 실패:", e)

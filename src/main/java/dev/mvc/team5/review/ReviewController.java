@@ -127,7 +127,7 @@ public class ReviewController {
         }
 
         // ⭐ Python AI 서버의 요약 API URL ⭐
-        String pythonApiUrl = "http://localhost:5001/summarize-reviews"; // review_ai_server.py의 엔드포인트
+        String pythonApiUrl = "http://121.78.128.146:5001/summarize-reviews"; // review_ai_server.py의 엔드포인트
 
         try {
             // Python API에 보낼 요청 바디 생성
@@ -184,7 +184,7 @@ public class ReviewController {
         }
 
         // ⭐ Python AI 서버의 요약 API URL ⭐
-        String pythonApiUrl = "http://localhost:5001/summarize-reviews-profile"; // review_ai_server.py의 엔드포인트
+        String pythonApiUrl = "http://121.78.128.146:5001/summarize-reviews-profile"; // review_ai_server.py의 엔드포인트
 
         try {
             // Python API에 보낼 요청 바디 생성
@@ -241,7 +241,7 @@ public class ReviewController {
             return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
         }
 
-        String pythonApiUrl = "http://localhost:5001/summarize-reviews"; // AI 서버 URL
+        String pythonApiUrl = "http://121.78.128.146:5001/summarize-reviews"; // AI 서버 URL
 
         try {
             Map<String, Object> requestToPython = new HashMap<>();

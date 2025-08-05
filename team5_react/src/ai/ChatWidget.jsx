@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { GlobalContext } from '../components/GlobalContext';
+import { getChatbotAPI } from '../components/Tool';
 // import Select from 'react-select';
 
 
@@ -12,6 +13,7 @@ function ChatWidget() {
   const [translateLang, setTranslateLang] = useState(''); // ✅ 번역 언어 상태
   const { loginUser } = useContext(GlobalContext);
   const bottomRef = useRef(null);
+
 
   const faqList = [
     '분야별로 전문가를 어떻게 찾아요?',
@@ -43,7 +45,7 @@ function ChatWidget() {
     setMessages((prev) => [...prev, { from: 'user', text: question }]);
     setIsLoading(true);
 
-    const res = await fetch('http://192.168.12.141:5000/chat', {
+    const res = await fetch(`${getChatbotAPI()}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -77,7 +79,7 @@ function ChatWidget() {
         userno: loginUser?.userno,
       };
 
-  const res = await fetch('http://192.168.12.141:5000/chat', {
+  const res = await fetch(`${getChatbotAPI()}/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload),

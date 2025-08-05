@@ -165,6 +165,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dto),
+                credentials: 'include',
             });
             if (!res.ok) throw new Error('수정 실패');
             alert('수정 성공!');
@@ -181,7 +182,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
     const deleteTalent = async (id) => {
         if (!window.confirm('정말 삭제하시겠습니까?')) return;
         try {
-            const res = await fetch(`${getIP()}/talent/delete/${id}`, { method: 'DELETE' });
+            const res = await fetch(`${getIP()}/talent/delete/${id}`, { method: 'DELETE', credentials: 'include', });
             if (!res.ok) throw new Error('삭제 실패');
             alert('삭제 완료');
             if (onDeleted) onDeleted();

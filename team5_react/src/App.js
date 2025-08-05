@@ -24,6 +24,10 @@ import MainPage from './components/Main';
 import UnivCertPage from './user/UnivCertPage';
 import ReviewPage from './review/ReviewPage';
 import ProfileReviewPage from './review/ProfileReviewPage';
+import MailTranslator from './ai/components/MailTranslator';
+import MailFormWithFile from './ai/components/MailFormWithFile';
+import MailSended from './ai/components/MailSended';
+import MailForm from './ai/components/MailForm';
 
 import PlacesPage from './place/PlacesPage';
 import MyPage from './mypage/MyPage';
@@ -82,6 +86,10 @@ function App() {
             <Route path="/review/review" element={<ReviewPage />} />
             <Route path="/review/profilereview" element={<ProfileReviewPage />} />
             <Route path="/profile/:userno" element={<UserProfilePage />} />
+            <Route path="/mail/translator" element={<MailTranslator />} />
+            <Route path="/mail/form" element={<MailForm />} />
+            <Route path="/mail/form_file" element={<MailFormWithFile />} />
+            <Route path="/mail/sended" element={<MailSended />} />
             {/* 재능 */}
             <Route path="/talent/post" element={<Talent />} />
             <Route path="/talent/type" element={<TalentType />} />
