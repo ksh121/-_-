@@ -293,7 +293,7 @@ const TalentList = ({ refresh, onUpdated, onDeleted, searchQuery }) => {
               </div>
 
               {t.fileInfos && t.fileInfos.length > 0 && (
-                <img src={`/uploads/talent/${t.fileInfos[0].storedFileName}`}
+                <img src={`${getIP()}/uploads/talent/${t.fileInfos[0].storedFileName}`}
                   alt={t.fileInfos[0].originalFileName}
                   className="w-24 h-24 object-cover rounded shadow mt-5"
                   onClick={(e) => e.stopPropagation()} />

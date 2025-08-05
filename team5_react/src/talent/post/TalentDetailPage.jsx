@@ -182,10 +182,10 @@ function TalentDetailPage() {
             <div className="w-[420px] aspect-[4/3]">
               {uniqueFiles.length === 1 ? (
                 <img
-                  src={`/uploads/talent/${uniqueFiles[0].storedFileName}`}
+                  src={`${getIP()}/uploads/talent/${uniqueFiles[0].storedFileName}`}
                   alt={uniqueFiles[0].originalFileName}
                   onClick={() =>
-                    handleImageClick(`/uploads/talent/${uniqueFiles[0].storedFileName}`)
+                    handleImageClick(`${getIP()}/uploads/talent/${uniqueFiles[0].storedFileName}`)
                   }
                   className="w-full h-full object-cover rounded-xl cursor-pointer"
                 />
@@ -194,10 +194,10 @@ function TalentDetailPage() {
                   {uniqueFiles.map((file) => (
                     <img
                       key={file.fileno || file.storedFileName}
-                      src={`/uploads/talent/${file.storedFileName}`}
+                      src={`${getIP()}/uploads/talent/${file.storedFileName}`}
                       alt={file.originalFileName}
                       onClick={() =>
-                        handleImageClick(`/uploads/talent/${file.storedFileName}`)
+                        handleImageClick(`${getIP()}/uploads/talent/${file.storedFileName}`)
                       }
                       className="w-full h-full object-cover rounded-xl cursor-pointer"
                     />
@@ -233,7 +233,7 @@ function TalentDetailPage() {
                 <>
                   <button
                     className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
-                    onClick={() => navigate(`/talent/update/${talent.talentno}`)}
+                    onClick={() => navigate(`${getIP()}/talent/update/${talent.talentno}`)}
                   >
                     ✏️ 수정
                   </button>
