@@ -92,6 +92,7 @@ function TalentDetailPage() {
     try {
       const res = await fetch(`${getIP()}/talent/delete/${talent.talentno}`, {
         method: "DELETE",
+        credentials: "include",
       });
       if (!res.ok) throw new Error("삭제 실패");
       alert("삭제 완료");
