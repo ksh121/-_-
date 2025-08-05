@@ -213,4 +213,4 @@ if __name__ == '__main__':
     # Flask 앱 실행
     # 기본적으로 5000번 포트에서 실행됩니다.
     # debug=True는 개발 중에는 유용하지만, 실제 운영 환경에서는 False로 설정해야 합니다.
-    app.run(port=5001, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
