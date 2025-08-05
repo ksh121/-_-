@@ -64,6 +64,11 @@ function TalentDetailPage() {
   };
 
   const startChat = async () => {
+    console.log("👉 loginUser.userno:", loginUser?.userno);      // senderId
+  console.log("👉 talent.userno:", talent?.userno);            // receiverId
+  console.log("👉 talent.talentno:", talent?.talentno);        // 재능 번호
+  console.log("👉 talent.title:", talent?.title);              // 제목
+  
   if (!loginUser) return alert("로그인이 필요합니다.");
   if (!talent?.userno) return alert("상대방 정보가 없습니다.");
 

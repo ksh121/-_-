@@ -16,6 +16,8 @@ import dev.mvc.team5.talents.Talent;
 import dev.mvc.team5.talents.TalentService;
 import dev.mvc.team5.user.User;
 import dev.mvc.team5.user.UserService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -40,8 +42,11 @@ public class ChatRoomService {
      * @return 저장된 ChatRoom
      */
     public ChatRoom save(ChatRoom chatRoom) {
-        return chatRoomRepository.save(chatRoom);
-    }
+      ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+      chatRoomRepository.flush(); 
+      return savedChatRoom;
+  }
+
 
     /**
      * 채팅방 ID로 조회
@@ -75,26 +80,24 @@ public class ChatRoomService {
      */
     @Transactional
     public ChatRoom findOrCreatePrivateChat(Long senderId, Long receiverId, Long talentno, String title) {
+
+        // 1. 기존 채팅방 존재하면 리턴
         Optional<ChatRoom> existingRoom = chatRoomRepository
             .findPrivateRoomByMembersAndTalent(senderId, receiverId, talentno);
-        if (existingRoom.isPresent()) {
-            return existingRoom.get();
-        }
+        if (existingRoom.isPresent()) return existingRoom.get();
 
+        // 2. 부모 엔티티 생성
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setRoomName("1:1 Chat");
+        chatRoom.setTalent(talentService.getEntityById(talentno));
+        chatRoom.setReceiverno(userService.findById(receiverId));
 
-        // ✅ 영속 엔티티로 변경
-        Talent talent = talentService.getEntityById(talentno);
-        chatRoom.setTalent(talent);
+        // 3. 저장 → 즉시 flush → DB에 진짜 insert
+        ChatRoom savedChatRoom = chatRoomRepository.saveAndFlush(chatRoom);
 
-        // ✅ receiver는 잘 처리됨
-        User receiver = userService.findById(receiverId);
-        chatRoom.setReceiverno(receiver);
-
-        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
-
+        // 4. 자식 엔티티 연결 (PK 존재가 보장됨)
         User sender = userService.findById(senderId);
+        User receiver = userService.findById(receiverId);
 
         ChatRoomMember m1 = new ChatRoomMember();
         m1.setChatRoom(savedChatRoom);
@@ -107,15 +110,20 @@ public class ChatRoomService {
         chatRoomMemberRepository.save(m1);
         chatRoomMemberRepository.save(m2);
 
+        // 5. 알림
         notificationService.createNotification(
-            receiverId,
+            receiver.getUserno(),
             "chat",
-            sender.getUsername() + "님이 [" + talent.getTitle() + "] 게시물에 대해 새 채팅을 시작했습니다.",
+            sender.getUsername() + "님이 [" + savedChatRoom.getTalent().getTitle() + "] 게시물에 대해 새 채팅을 시작했습니다.",
             savedChatRoom.getChatRoomno()
         );
 
         return savedChatRoom;
     }
+
+
+
+
 
 
 

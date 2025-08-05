@@ -30,11 +30,11 @@ public class ChatRoomMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chatRoomMember_seq")
-    @SequenceGenerator(name = "chatRoomMember_seq", sequenceName = "CHATROOMMENBER_SEQ", allocationSize = 1)  
+    @SequenceGenerator(name = "chatRoomMember_seq", sequenceName = "CHATROOMMEMBER_SEQ", allocationSize = 1)  
     private Long chatRoomMemberno;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chatRoomno")
+    @JoinColumn(name = "CHAT_ROOMNO")
     @JsonIgnore
     private ChatRoom chatRoom;
 

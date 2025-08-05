@@ -33,7 +33,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
   useEffect(() => {
     const url = `${getIP()}/chatroom/${chatRoomno}?loginUserno=${loginUser.userno}`;
-    axios.get(url)
+    axios.get(url, { withCredentials: true })
       .then(res => {
         const data = res.data;
         setIsPublicRoom(data.publicRoom);
@@ -104,7 +104,9 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
   const handleAccept = async () => {
     try {
-      await axios.patch(`${getIP()}/request/${pendingRequest.requestno}/accept`);
+      await axios.patch(`${getIP()}/request/${pendingRequest.requestno}/accept`, null, {
+        withCredentials: true
+      });
       alert("요청을 수락했습니다!");
       setPendingRequest(null);
     } catch (err) {
@@ -114,7 +116,9 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
   const handleReject = async () => {
     try {
-      await axios.patch(`${getIP()}/request/${pendingRequest.requestno}/reject`);
+      await axios.patch(`${getIP()}/request/${pendingRequest.requestno}/reject`, null, {
+        withCredentials: true
+      });
       alert("요청을 거절했습니다.");
       setPendingRequest(null);
     } catch (err) {
@@ -144,7 +148,9 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         price,
         chatRoomno: chatRoomno,
       };
-      await axios.post(`${getIP()}/request/save`, dto);
+      await axios.post(`${getIP()}/request/save`, dto, {
+        withCredentials: true
+      });
       alert("요청이 전송되었습니다!");
       setShowRequestModal(false);
     } catch (error) {
