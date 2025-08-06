@@ -259,6 +259,48 @@ function TalentDetailPage() {
         </div>
       </div>     
     </div>
+    {isModalOpen && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <img src={selectedImage} className="max-w-[90vw] max-h-[90vh] rounded shadow-lg" alt="상세 보기" />
+          <button onClick={closeModal} className="absolute top-4 right-4 text-white text-xl">✕</button>
+        </div>
+      )}
+
+      {/* 신고 모달 */}
+      {showReport && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
+          <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+            <h3 className="text-lg font-bold mb-4">🚨 신고하기</h3>
+            <label className="block mb-2 font-semibold">신고 유형</label>
+            <select
+              value={reportType}
+              onChange={(e) => setReportType(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+            >
+              <option value="">-- 선택하세요 --</option>
+              <option value="욕설/비방">욕설/비방</option>
+              <option value="광고/홍보">광고/홍보</option>
+              <option value="음란/선정성">음란/선정성</option>
+              <option value="사기/허위">사기/허위</option>
+              <option value="중복/도배">중복/도배</option>
+              <option value="기타">기타</option>
+            </select>
+            <label className="block mb-2 font-semibold">신고 사유</label>
+            <textarea
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+              rows="5"
+              placeholder="신고 사유를 입력하세요."
+              className="w-full border border-gray-300 rounded p-2 mb-4"
+            />
+            <div className="flex justify-end gap-2">
+              <button className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500" onClick={() => setShowReport(false)}>취소</button>
+              <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={submitReport}>제출</button>
+            </div>
+            <button onClick={() => setShowReport(false)} className="absolute top-2 right-2 text-xl">✕</button>
+          </div>
+        </div>
+      )}
 
     {/* 하단 리뷰 */}
     <div className="mt-10">
