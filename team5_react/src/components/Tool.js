@@ -8,7 +8,7 @@ const getCopyright = () => {
 }
 
 const getChatbotAPI = () => {
-  return "http://121.78.128.146:5000"; // chatbot.py (ai-agent등 ai폴더 플라스크 실행)
+  return "http://121.78.128.146:5000"; // chatbot.py (ai폴더 플라스크 실행)
 };
 
 const getLlmAPI = () => {
