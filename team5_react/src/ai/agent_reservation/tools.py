@@ -4,7 +4,7 @@ import agent_reservation.context
 from agent_reservation.utils import parse_datetime, extract_placename
 import requests
 
-BASE_URL = "http://localhost:9093/reservations/api"
+BASE_URL = "http://121.78.128.212:9093/reservations/api"
 
 
 def make_reservation(input: dict) -> str:

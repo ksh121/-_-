@@ -28,7 +28,9 @@ function TalentDetailPage() {
 
 
   useEffect(() => {
-    fetch(`${getIP()}/talent/detail/${talentno}`)
+    fetch(`${getIP()}/talent/detail/${talentno}`, {
+      credentials: "include",
+    })
       .then((res) => {
         if (!res.ok) throw new Error("서버 오류");
         return res.json();
@@ -62,6 +64,11 @@ function TalentDetailPage() {
   };
 
   const startChat = async () => {
+    console.log("👉 loginUser.userno:", loginUser?.userno);      // senderId
+  console.log("👉 talent.userno:", talent?.userno);            // receiverId
+  console.log("👉 talent.talentno:", talent?.talentno);        // 재능 번호
+  console.log("👉 talent.title:", talent?.title);              // 제목
+  
   if (!loginUser) return alert("로그인이 필요합니다.");
   if (!talent?.userno) return alert("상대방 정보가 없습니다.");
 
@@ -92,6 +99,7 @@ function TalentDetailPage() {
     try {
       const res = await fetch(`${getIP()}/talent/delete/${talent.talentno}`, {
         method: "DELETE",
+        credentials: "include",
       });
       if (!res.ok) throw new Error("삭제 실패");
       alert("삭제 완료");
@@ -115,6 +123,7 @@ function TalentDetailPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dto),
+        credentials: "include",
       });
       alert("요청 성공!");
     } catch (e) {
@@ -182,10 +191,10 @@ function TalentDetailPage() {
             <div className="w-[420px] aspect-[4/3]">
               {uniqueFiles.length === 1 ? (
                 <img
-                  src={`/uploads/talent/${uniqueFiles[0].storedFileName}`}
+                  src={`${getIP()}/uploads/talent/${uniqueFiles[0].storedFileName}`}
                   alt={uniqueFiles[0].originalFileName}
                   onClick={() =>
-                    handleImageClick(`/uploads/talent/${uniqueFiles[0].storedFileName}`)
+                    handleImageClick(`${getIP()}/uploads/talent/${uniqueFiles[0].storedFileName}`)
                   }
                   className="w-full h-full object-cover rounded-xl cursor-pointer"
                 />
@@ -194,10 +203,10 @@ function TalentDetailPage() {
                   {uniqueFiles.map((file) => (
                     <img
                       key={file.fileno || file.storedFileName}
-                      src={`/uploads/talent/${file.storedFileName}`}
+                      src={`${getIP()}/uploads/talent/${file.storedFileName}`}
                       alt={file.originalFileName}
                       onClick={() =>
-                        handleImageClick(`/uploads/talent/${file.storedFileName}`)
+                        handleImageClick(`${getIP()}/uploads/talent/${file.storedFileName}`)
                       }
                       className="w-full h-full object-cover rounded-xl cursor-pointer"
                     />
@@ -233,7 +242,7 @@ function TalentDetailPage() {
                 <>
                   <button
                     className="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
-                    onClick={() => navigate(`/talent/update/${talent.talentno}`)}
+                    onClick={() => navigate(`${getIP()}/talent/update/${talent.talentno}`)}
                   >
                     ✏️ 수정
                   </button>
@@ -250,6 +259,48 @@ function TalentDetailPage() {
         </div>
       </div>     
     </div>
+    {isModalOpen && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <img src={selectedImage} className="max-w-[90vw] max-h-[90vh] rounded shadow-lg" alt="상세 보기" />
+          <button onClick={closeModal} className="absolute top-4 right-4 text-white text-xl">✕</button>
+        </div>
+      )}
+
+      {/* 신고 모달 */}
+      {showReport && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 z-50">
+          <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-lg relative">
+            <h3 className="text-lg font-bold mb-4">🚨 신고하기</h3>
+            <label className="block mb-2 font-semibold">신고 유형</label>
+            <select
+              value={reportType}
+              onChange={(e) => setReportType(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+            >
+              <option value="">-- 선택하세요 --</option>
+              <option value="욕설/비방">욕설/비방</option>
+              <option value="광고/홍보">광고/홍보</option>
+              <option value="음란/선정성">음란/선정성</option>
+              <option value="사기/허위">사기/허위</option>
+              <option value="중복/도배">중복/도배</option>
+              <option value="기타">기타</option>
+            </select>
+            <label className="block mb-2 font-semibold">신고 사유</label>
+            <textarea
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+              rows="5"
+              placeholder="신고 사유를 입력하세요."
+              className="w-full border border-gray-300 rounded p-2 mb-4"
+            />
+            <div className="flex justify-end gap-2">
+              <button className="px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500" onClick={() => setShowReport(false)}>취소</button>
+              <button className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700" onClick={submitReport}>제출</button>
+            </div>
+            <button onClick={() => setShowReport(false)} className="absolute top-2 right-2 text-xl">✕</button>
+          </div>
+        </div>
+      )}
 
     {/* 하단 리뷰 */}
     <div className="mt-10">

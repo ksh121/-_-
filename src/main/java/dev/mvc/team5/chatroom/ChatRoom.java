@@ -36,6 +36,7 @@ public class ChatRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chatRoom_seq")
     @SequenceGenerator(name = "chatRoom_seq", sequenceName = "CHATROOM_SEQ", allocationSize = 1)
+    @Column(name = "CHAT_ROOMNO")
     private Long chatRoomno;
 
     private String roomName;

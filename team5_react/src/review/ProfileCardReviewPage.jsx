@@ -76,7 +76,7 @@ console.log('GlobalContext:', context);
         const summarizeReviews = async () => {
             try {
                 // 이 부분에서 receiverno와 reviewComments가 제대로 보내지는지 확인
-                const res = await axios.post('/reviews/summary/receiver_profile', { 
+                const res = await axios.post(`${getIP()}/reviews/summary/receiver_profile`, { 
                     receiverNo: receiverno, // receiverno도 함께 보냄
                     reviewComments: reviewComments 
                 }); 

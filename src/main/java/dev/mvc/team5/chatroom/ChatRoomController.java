@@ -113,6 +113,7 @@ public class ChatRoomController {
         @RequestParam(name = "receiverId") Long receiverId,
         @RequestParam(name = "talentno") Long talentno,
         @RequestParam(name = "title") String title) {
+  
 
         ChatRoom chatRoom = chatRoomService.findOrCreatePrivateChat(senderId, receiverId, talentno, title);
 
