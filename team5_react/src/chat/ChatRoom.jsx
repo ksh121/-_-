@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef, useContext } from "react";
 import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
@@ -5,7 +6,7 @@ import { Client } from "@stomp/stompjs";
 import axios from "axios";
 import { GlobalContext } from "../components/GlobalContext";
 import RequestModal from "./components/RequestModal";
-import {getIP} from '../components/Tool';
+import { getIP } from '../components/Tool';
 
 const SOCKET_URL = `${getIP()}/ws-chat`;
 
@@ -29,7 +30,6 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
   const [receiverno, setReceiverno] = useState(null);
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [talentPrice, setTalentPrice] = useState(null);
-
 
   useEffect(() => {
     const url = `${getIP()}/chatroom/${chatRoomno}?loginUserno=${loginUser.userno}`;
@@ -60,13 +60,17 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         setIsConnected(true);
         stompClient.current.subscribe(`${getIP()}/topic/chatroom/${chatRoomno}`, msg => {
           const message = JSON.parse(msg.body);
-          console.log("알림 수신 메세지", message);
           if (message?.type === "REQUEST" && message?.status === "pending") {
             if (Number(message.receiverno) === Number(loginUser.userno)) {
               setPendingRequest(message);
             }
           } else if (message?.type === "SYSTEM") {
-            setMessages(prev => [...prev, { userName: message.userName, content: message.content, senderno: null, type: "SYSTEM" }]);
+            setMessages(prev => [...prev, {
+              userName: message.userName,
+              content: message.content,
+              senderno: null,
+              type: "SYSTEM"
+            }]);
           } else {
             setMessages(prev => [...prev, message]);
           }
@@ -85,7 +89,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
   }, [chatRoomno, loginUser?.userno]);
 
   useEffect(() => {
-    axios.get(`${getIP()}/request/chatroom/${chatRoomno}`)
+    axios.get(`${getIP()}/request/chatroom/${chatRoomno}`, { withCredentials: true })
       .then(res => {
         if (res.status === 204) return;
         const req = res.data;
@@ -97,7 +101,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
   }, [chatRoomno, loginUser?.userno]);
 
   useEffect(() => {
-    axios.get(`${getIP()}/chatmember/chatroom/${chatRoomno}/members`)
+    axios.get(`${getIP()}/chatmember/chatroom/${chatRoomno}/members`, { withCredentials: true })
       .then(res => setMembers(res.data))
       .catch(console.error);
   }, [chatRoomno]);
@@ -127,19 +131,19 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
   };
 
   const openRequestModal = () => {
-  if (talentPrice == null) {
-    alert("가격 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-    return;
-  }
-  setShowRequestModal(true);
-};
-
+    if (talentPrice == null) {
+      alert("가격 정보를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+    setShowRequestModal(true);
+  };
 
   const submitRequest = async ({ message, price }) => {
     try {
       const res = await axios.get(`${getIP()}/chatroom/${chatRoomno}?loginUserno=${loginUser.userno}`, { withCredentials: true });
       const room = res.data;
       if (!room.talentno) return alert("요청 가능한 게시물이 없습니다.");
+
       const dto = {
         talentno: room.talentno,
         giverno: loginUser.userno,
@@ -148,9 +152,25 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         price,
         chatRoomno: chatRoomno,
       };
+
       await axios.post(`${getIP()}/request/save`, dto, {
         withCredentials: true
       });
+
+      // ✅ 요청 메시지를 로컬에도 즉시 추가
+      setMessages(prev => [
+        ...prev,
+        {
+          chatRoomno,
+          senderno: loginUser.userno,
+          userName: loginUser.username,
+          content: message,
+          type: "REQUEST",
+          price,
+          receiverno: room.receiverno,
+        }
+      ]);
+
       alert("요청이 전송되었습니다!");
       setShowRequestModal(false);
     } catch (error) {
@@ -166,21 +186,26 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
   const sendMessage = () => {
     if (!input.trim()) return;
+
     const message = {
       chatRoomno: Number(chatRoomno),
       senderno: loginUser.userno,
       userName: loginUser.username,
       content: input,
     };
+
     stompClient.current.publish({
       destination: "/app/chat.sendMessage",
       body: JSON.stringify(message),
     });
+
+    setMessages(prev => [...prev, message]);
     setInput("");
   };
 
   return (
     <div className="max-w-md mx-auto flex flex-col max-h-[800px] border shadow-lg rounded-lg">
+      {/* 헤더 */}
       <div className="bg-blue-600 text-white px-4 py-3 flex items-center justify-between">
         <div className="text-lg font-semibold">
           💬 {isPublicRoom ? roomName : `${receiverName}님과의 채팅`}
@@ -188,9 +213,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
 
         {isPublicRoom && (
           <div className="flex flex-col ml-4">
-            <div className="text-sm text-white mb-1">
-              👥 참여 인원: {members.length}명
-            </div>
+            <div className="text-sm text-white mb-1">👥 참여 인원: {members.length}명</div>
             <div className="flex items-center gap-2 max-w-[300px] overflow-hidden">
               {members.slice(0, 2).map(member => (
                 <div key={member.userno} className="bg-white text-blue-600 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
@@ -213,35 +236,52 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         )}
       </div>
 
+      {/* 게시물 제목 */}
       {talentTitle && (
         <div className="px-4 py-1 text-sm text-gray-600 bg-blue-50 border-b">
           📌 게시물: <span className="font-semibold">{talentTitle}</span>
         </div>
       )}
 
+      {/* 메시지 영역 */}
       <div ref={scrollRef} className="overflow-y-auto bg-gray-50 p-4 h-[560px]">
         {messages.length === 0 ? (
           <div className="text-center text-gray-400 mt-20">
             아직 메시지가 없습니다. 대화를 시작해보세요!
           </div>
         ) : (
-          messages.map((msg, idx) => (
-            msg.type?.toUpperCase() === "SYSTEM" ? (
-              <div key={idx} className="text-center text-xs text-gray-500 my-2">
-                📢 {msg.content}
-              </div>
-            ) : (
-              <div key={idx} className={`flex ${msg.senderno === loginUser?.userno ? "justify-end" : "justify-start"} mb-2`}>
-                <div className={`max-w-xs px-4 py-2 rounded-lg ${msg.senderno === loginUser?.userno ? "bg-blue-500 text-white" : "bg-white border"}`}>
-                  <span className="block text-sm font-semibold">{msg.userName}</span>
-                  <span>{msg.content}</span>
+          messages.map((msg, idx) => {
+            if (msg.type === "SYSTEM") {
+              return (
+                <div key={idx} className="text-center text-xs text-gray-500 my-2">
+                  📢 {msg.content}
                 </div>
-              </div>
-            )
-          ))
+              );
+            } else if (msg.type === "REQUEST") {
+              return (
+                <div key={idx} className={`flex ${msg.senderno === loginUser.userno ? "justify-end" : "justify-start"} mb-2`}>
+                  <div className={`max-w-xs px-4 py-2 rounded-lg border bg-yellow-100 text-gray-800`}>
+                    <div className="text-sm font-semibold">{msg.userName}님의 요청</div>
+                    <div className="mt-1">{msg.content}</div>
+                    <div className="mt-1 text-sm text-gray-700">💰 {msg.price?.toLocaleString()}원</div>
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <div key={idx} className={`flex ${msg.senderno === loginUser?.userno ? "justify-end" : "justify-start"} mb-2`}>
+                  <div className={`max-w-xs px-4 py-2 rounded-lg ${msg.senderno === loginUser?.userno ? "bg-blue-500 text-white" : "bg-white border"}`}>
+                    <span className="block text-sm font-semibold">{msg.userName}</span>
+                    <span>{msg.content}</span>
+                  </div>
+                </div>
+              );
+            }
+          })
         )}
       </div>
 
+      {/* 입력창 */}
       <div className="p-4 border-t flex gap-2">
         <input
           className="flex-1 border rounded px-3 py-2"
@@ -255,6 +295,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         </button>
       </div>
 
+      {/* 요청 수락/거절 알림 */}
       {pendingRequest && pendingRequest.receiverno === loginUser.userno && (
         <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative my-2 mx-4">
           <strong className="font-bold">📩 요청 알림: </strong>
@@ -277,6 +318,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         </div>
       )}
 
+      {/* 전체 멤버 목록 모달 */}
       {showAllMembers && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg max-w-sm w-full p-4">
@@ -297,8 +339,7 @@ export default function ChatRoom({ chatRoomno: propChatRoomno }) {
         </div>
       )}
 
-      
-
+      {/* 요청 모달 */}
       <RequestModal
         isOpen={showRequestModal}
         onClose={() => setShowRequestModal(false)}
