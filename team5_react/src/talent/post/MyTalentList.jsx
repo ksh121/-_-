@@ -92,7 +92,7 @@ const MyTalentList = () => {
             onClick={() => handleGoDetail(t.talentno)}
             className="relative flex items-center justify-between gap-4 border px-5 py-4 rounded-lg mb-4 hover:shadow cursor-pointer">
             {t.fileInfos && t.fileInfos.length > 0 && (
-              <img src={`/uploads/talent/${t.fileInfos[0].storedFileName}`}
+              <img src={`${getIP()}/uploads/talent/${t.fileInfos[0].storedFileName}`}
                 alt={t.fileInfos[0].originalFileName}
                 className="w-24 h-24 object-cover rounded shadow"
                 onClick={(e) => e.stopPropagation()} />

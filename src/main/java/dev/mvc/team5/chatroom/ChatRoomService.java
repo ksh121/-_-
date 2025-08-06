@@ -84,18 +84,19 @@ public class ChatRoomService {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.setRoomName("1:1 Chat");
 
-        // ✅ 영속 엔티티로 변경
         Talent talent = talentService.getEntityById(talentno);
         chatRoom.setTalent(talent);
 
-        // ✅ receiver는 잘 처리됨
         User receiver = userService.findById(receiverId);
         chatRoom.setReceiverno(receiver);
 
+        // ★ 1. ChatRoom만 먼저 저장
         ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+        chatRoomRepository.flush(); // 실제 DB에 반영
 
         User sender = userService.findById(senderId);
 
+        // ★ 2. 이후 ChatRoomMember 생성
         ChatRoomMember m1 = new ChatRoomMember();
         m1.setChatRoom(savedChatRoom);
         m1.setUser(sender);
@@ -105,8 +106,9 @@ public class ChatRoomService {
         m2.setUser(receiver);
 
         chatRoomMemberRepository.save(m1);
-        chatRoomMemberRepository.save(m2);
+        chatRoomMemberRepository.save(m2); // 각각 저장하거나 bulk save
 
+        // 알림
         notificationService.createNotification(
             receiverId,
             "chat",
@@ -116,8 +118,6 @@ public class ChatRoomService {
 
         return savedChatRoom;
     }
-
-
 
     /**
      * 전체 공개 채팅방 목록 조회 (최신순)
