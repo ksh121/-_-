@@ -1,7 +1,7 @@
 const getIP = () => {
   //return "http://localhost:9093";
-  return "http://3.39.121.202:9093";
- // return "192.168.12.145";
+  //return "http://3.39.121.202:9093";
+  return "/api";
 }
 const getCopyright = () => {
   return "TEAM 5";
