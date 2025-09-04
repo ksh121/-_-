@@ -122,7 +122,7 @@ function UserLogin({ isModalOpen = true, closeModal = () => {} }) {
 
 
   const test = () => {
-    setId('kimgyuhwa123');
+    setId('user');
     setPasswd('1234');
   };
 

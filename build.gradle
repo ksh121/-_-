@@ -68,7 +68,7 @@ dependencies {
     
     
     implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'org.hibernate.orm:hibernate-community-dialects:6.5.3.Final'     // Hibernate community dialects (Oracle 10g/11g 등 레거시)
+    // implementation 'org.hibernate.orm:hibernate-community-dialects:6.5.3.Final'     // Hibernate community dialects (Oracle 10g/11g 등 레거시)
 }
 
 
