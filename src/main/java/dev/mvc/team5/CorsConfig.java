@@ -11,7 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
     registry.addMapping("/**") // 모든 경로에 대해
     	.allowedOrigins(
         "http://localhost:3000",  // 로컬 개발환경용
-        "http://121.78.128.212:3000" // 실제 배포된 프론트 주소
+        "https://team5-react.vercel.app" // 실제 배포된 프론트 주소
     			)
       .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
       .allowedHeaders("*")   // 모든 요청 헤더 허용

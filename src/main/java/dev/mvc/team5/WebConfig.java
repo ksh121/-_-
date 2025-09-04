@@ -29,7 +29,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // 모든 경로에 대해
-            .allowedOrigins("http://localhost:3000", "http://121.78.128.212:3000") // 허용 도메인
+            .allowedOrigins("http://localhost:3000", "https://team5-react.vercel.app") // 허용 도메인
             .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")   // 허용 메서드
             .allowedHeaders("*")   // 모든 헤더 허용
             .allowCredentials(true) // 인증 정보 허용 (쿠키 등)
