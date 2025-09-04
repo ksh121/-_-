@@ -1,7 +1,7 @@
 const getIP = () => {
   //return "http://localhost:9093";
-  return "http://3.39.121.202:9093";
-  //return "/api";
+  // return "http://3.39.121.202:9093"; CORS문제 .. vercel로 프론트 배포중이라 교차 출처때문에 쿠키 설정
+  return "/api";
 }
 const getCopyright = () => {
   return "TEAM 5";
